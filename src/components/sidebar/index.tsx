@@ -49,6 +49,8 @@ function Sidebar() {
           display: "flex",
           justifyContent: "center",
 
+          position: "sticky",
+          top: "0px",
           background: "#222",
           padding: "15px 8px",
           fontWeight: "900",
