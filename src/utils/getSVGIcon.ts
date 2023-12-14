@@ -11,10 +11,7 @@ const allowedAttrs = [
   "class",
 ];
 
-export default function getSVGIcon(
-  content?: string,
-  attrs?: Record<string, string>
-) {
+export function getSVGIcon(content?: string, attrs?: Record<string, string>) {
   if (!content) return;
   let parser = new DOMParser();
   let element = parser.parseFromString(content, "image/svg+xml");
