@@ -2,6 +2,8 @@ import { writeText } from "@tauri-apps/api/clipboard";
 import { deleteIconById } from "../../db";
 import { toast } from "react-hot-toast";
 import HeaderArea from "../header";
+import BottomBar from "../bottombar";
+import { useState } from "react";
 
 function Main({ data, setData }: { data: any; setData: any }) {
   const copyToClipboard = async (text: string) => {
@@ -34,6 +36,8 @@ function Main({ data, setData }: { data: any; setData: any }) {
       console.error("Error Deleting element:", e);
     }
   };
+
+  const [selectedId, setSelectedId] = useState();
   return (
     <div
       style={{
@@ -57,9 +61,12 @@ function Main({ data, setData }: { data: any; setData: any }) {
           console.log("elements", e);
           return (
             <div
+              onClick={() => setSelectedId(e.id)}
               key={e.id}
+              className="icon-card"
               style={{
-                border: "2px solid #444",
+                border:
+                  selectedId == e.id ? "2px solid #396cd8" : "2px solid #444",
                 borderRadius: "4px",
                 padding: "10px",
                 display: "flex",
@@ -99,6 +106,8 @@ function Main({ data, setData }: { data: any; setData: any }) {
           );
         })}
       </ul>
+
+      <BottomBar selectedId={selectedId} />
     </div>
   );
 }

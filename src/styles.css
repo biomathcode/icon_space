@@ -141,3 +141,16 @@ button {
   padding-left: 40px;
   font-size: 14px;
 }
+
+.icon-card {
+  border: 2px solid #444;
+  cursor: pointer;
+}
+
+.icon-card:hover {
+  border-color: #396cd8;
+}
+.icon-card:active {
+  border-color: #396cd8;
+  background-color: #e8e8e8;
+}
