@@ -5,6 +5,8 @@ import HeaderArea from "../header";
 import BottomBar from "../bottombar";
 import { useState } from "react";
 import TableView from "../table";
+import Grid from "../grid/Grid";
+import GridContainer from "../grid";
 
 function Main({ data, setData }: { data: any; setData: any }) {
   const copyToClipboard = async (text: string) => {
@@ -108,6 +110,8 @@ function Main({ data, setData }: { data: any; setData: any }) {
         })}
       </ul>
       {/* <TableView /> */}
+
+      <GridContainer />
 
       <BottomBar setSelectedId={setSelectedId} selectedId={selectedId} />
     </div>
