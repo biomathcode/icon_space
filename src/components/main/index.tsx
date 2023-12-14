@@ -47,7 +47,7 @@ function Main({ data, setData }: { data: any; setData: any }) {
         maxHeight: "100vh",
       }}
     >
-      <HeaderArea />
+      <HeaderArea data={data} setData={setData} />
 
       <ul
         className="row"
