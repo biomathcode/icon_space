@@ -4,6 +4,7 @@ import { toast } from "react-hot-toast";
 import HeaderArea from "../header";
 import BottomBar from "../bottombar";
 import { useState } from "react";
+import TableView from "../table";
 
 function Main({ data, setData }: { data: any; setData: any }) {
   const copyToClipboard = async (text: string) => {
@@ -106,6 +107,7 @@ function Main({ data, setData }: { data: any; setData: any }) {
           );
         })}
       </ul>
+      <TableView />
 
       <BottomBar selectedId={selectedId} />
     </div>

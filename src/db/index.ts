@@ -125,6 +125,20 @@ export const insertIcon = async (name: string, svg: string) => {
   return await db.select(`SELECT id, name, svg FROM icons `);
 };
 
+export const insertFolder = async (name: string) => {
+  const db = await getDatabase();
+
+  await db.execute(
+    `
+  INSERT INTO folders (name) VALUES ($1)
+
+  `,
+    [name]
+  );
+
+  return await db.select(`SELECT id, name FROM folders `);
+};
+
 export const deleteIconById = async (id: number): Promise<void> => {
   const db = await getDatabase();
 

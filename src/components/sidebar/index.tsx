@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Logo from "../../assets/logo.svg";
 import { getAllFolders } from "../../db";
+import Dialog from "../dialog";
 
 function Sidebar() {
   const [folders, setFolders] = useState<any>([
@@ -89,16 +90,8 @@ function Sidebar() {
             </button>
           );
         })}
-        <button
-          style={{
-            display: "flex",
-            gap: "10px",
-            fontSize: "14px",
-            alignItems: "center",
-          }}
-        >
-          <span>➕</span> <span>Folder</span>{" "}
-        </button>
+
+        <Dialog setFolder={setFolders} />
       </nav>
     </div>
   );
