@@ -62,7 +62,7 @@ function Main({ data, setData }: { data: any; setData: any }) {
           console.log("elements", e);
           return (
             <div
-              onClick={() => setSelectedId(e.id)}
+              onClick={() => setSelectedId(selectedId !== e.id ? e.id : "")}
               key={e.id}
               className="icon-card"
               style={{
@@ -107,9 +107,9 @@ function Main({ data, setData }: { data: any; setData: any }) {
           );
         })}
       </ul>
-      <TableView />
+      {/* <TableView /> */}
 
-      <BottomBar selectedId={selectedId} />
+      <BottomBar setSelectedId={setSelectedId} selectedId={selectedId} />
     </div>
   );
 }

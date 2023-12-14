@@ -170,8 +170,20 @@ export const deleteAllFolders = async () => {
   const db = await getDatabase();
 
   return await db.execute(`
-  DELETE FROM folders
+  DELETE FROM folders 
   `);
+};
+
+export const getIconById = async (id: number) => {
+  const db = await getDatabase();
+
+  return await db.select(
+    `
+  SELECT id,name, svg FROM icons  
+  WHERE id = $1
+  `,
+    [id]
+  );
 };
 
 export const updateIconNameById = async (
