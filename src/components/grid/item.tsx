@@ -2,12 +2,14 @@ import React, { forwardRef, HTMLAttributes, CSSProperties } from "react";
 
 export type ItemProps = HTMLAttributes<HTMLDivElement> & {
   id: string;
+  name?: string;
+  svg?: string;
   withOpacity?: boolean;
   isDragging?: boolean;
 };
 
 const Item = forwardRef<HTMLDivElement, ItemProps>(
-  ({ id, withOpacity, isDragging, style, ...props }, ref) => {
+  ({ id, withOpacity, isDragging, style, svg, name, ...props }, ref) => {
     const inlineStyles: CSSProperties = {
       opacity: withOpacity ? "0.5" : "1",
       transformOrigin: "50% 50%",
@@ -27,9 +29,21 @@ const Item = forwardRef<HTMLDivElement, ItemProps>(
       ...style,
     };
 
+    // const svg =
+    // '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-activity-square"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M17 12h-2l-2 5-2-10-2 5H7"/></svg>';
+
     return (
       <div ref={ref} style={inlineStyles} {...props}>
-        {id}
+        <div>
+          <img
+            style={{
+              width: "40px",
+              height: "40px",
+            }}
+            src={`data:image/svg+xml;utf8,${encodeURIComponent(svg || "")}`}
+          />
+          <div>{id + name}</div>
+        </div>
       </div>
     );
   }

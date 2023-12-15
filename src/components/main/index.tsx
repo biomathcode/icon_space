@@ -51,7 +51,14 @@ function Main({ data, setData }: { data: any; setData: any }) {
     >
       <HeaderArea data={data} setData={setData} />
 
-      <ul
+      <GridContainer
+        items={data}
+        setItems={setData}
+        selectedId={selectedId}
+        setSelectedId={setSelectedId}
+      />
+
+      {/* <ul
         className="row"
         style={{
           gap: "20px",
@@ -108,10 +115,8 @@ function Main({ data, setData }: { data: any; setData: any }) {
             </div>
           );
         })}
-      </ul>
+      </ul> */}
       {/* <TableView /> */}
-
-      <GridContainer />
 
       <BottomBar setSelectedId={setSelectedId} selectedId={selectedId} />
     </div>

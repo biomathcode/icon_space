@@ -19,23 +19,45 @@ import Grid from "./Grid";
 import SortableItem from "./SortableItem";
 import Item from "./item";
 
-const GridContainer: FC = () => {
-  const [items, setItems] = useState(
-    Array.from({ length: 20 }, (_, i) => (i + 1).toString())
-  );
+const GridContainer = ({
+  items,
+  setItems,
+  selectedId,
+  setSelectedId,
+}: {
+  items: any;
+  setItems: any;
+  selectedId: any;
+  setSelectedId: any;
+}) => {
+  // const [items, setItems] = useState(
+  //   Array.from({ length: 20 }, (_, i) => (i + 1).toString())
+  // );
+
+  const [sort, setSort] = useState(true);
   const [activeId, setActiveId] = useState<string | null>(null);
-  const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
+  const sensors = useSensors(
+    useSensor(MouseSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
+    useSensor(TouchSensor)
+  );
 
   const handleDragStart = useCallback((event: DragStartEvent) => {
     setActiveId(event.active.id as string);
   }, []);
   const handleDragEnd = useCallback((event: DragEndEvent) => {
+    if (sort) {
+      return;
+    }
     const { active, over } = event;
 
     if (active?.id !== over?.id) {
-      setItems((items) => {
-        const oldIndex = items.indexOf(active.id as string);
-        const newIndex = items.indexOf(over?.id as string);
+      setItems((items: any) => {
+        const oldIndex = items.findIndex((item: any) => item.id === active?.id);
+        const newIndex = items.findIndex((item: any) => item.id === over?.id);
 
         return arrayMove(items, oldIndex, newIndex);
       });
@@ -54,20 +76,28 @@ const GridContainer: FC = () => {
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
       onDragCancel={handleDragCancel}
+      autoScroll={{ threshold: { x: 0, y: 0.2 } }}
     >
       <SortableContext items={items} strategy={rectSortingStrategy}>
         <Grid columns={5}>
-          {items.map((id) => (
-            <SortableItem key={id} id={id} />
+          {items.map((item: any) => (
+            <SortableItem
+              onClick={() =>
+                setSelectedId(selectedId !== item.id ? item.id : "")
+              }
+              key={item.id}
+              id={item.id}
+              name={item.name}
+              svg={item.svg}
+            />
           ))}
         </Grid>
       </SortableContext>
       <DragOverlay adjustScale style={{ transformOrigin: "0 0 " }}>
         {activeId ? (
           <Item
-            style={{
-              rotate: "10deg",
-            }}
+            name={items.find((e: any) => e.id === activeId).name}
+            svg={items.find((e: any) => e.id === activeId).svg}
             id={activeId}
             isDragging
           />
