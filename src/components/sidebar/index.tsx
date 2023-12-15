@@ -3,7 +3,13 @@ import Logo from "../../assets/logo.svg";
 import { getAllFolders } from "../../db";
 import Dialog from "../dialog";
 
-function Sidebar() {
+function Sidebar({
+  selFolder,
+  setSelFolder,
+}: {
+  selFolder: any;
+  setSelFolder: any;
+}) {
   const [folders, setFolders] = useState<any>([
     {
       id: 1,
@@ -82,8 +88,12 @@ function Sidebar() {
                 gap: "10px",
                 fontSize: "14px",
                 alignItems: "center",
+                background: e.id == selFolder ? "#275DAD" : "#111",
               }}
               key={e.id}
+              onClick={() => {
+                setSelFolder(e.id);
+              }}
             >
               <span>{e.name == "home" ? "🏡" : "🖼️"}</span>
               <span>{e.name}</span>

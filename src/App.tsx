@@ -75,13 +75,16 @@ function App() {
     init();
   }, []);
 
+  const [selFolder, setSelFolder] = useState(1);
+
+
   return (
     <div className="container">
       <Toaster position="top-right" />
 
       <div className="flex gap-5">
-        <Sidebar />
-        <Main data={data} setData={setData} />
+        <Sidebar selFolder={selFolder} setSelFolder={setSelFolder} />
+        <Main data={data} setData={setData} selFolder={selFolder} />
       </div>
     </div>
   );

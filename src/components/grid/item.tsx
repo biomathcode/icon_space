@@ -17,20 +17,20 @@ const Item = forwardRef<HTMLDivElement, ItemProps>(
       width: "140px",
       borderRadius: "10px",
       cursor: isDragging ? "grabbing" : "grab",
-      backgroundColor: "#ffffff",
-      color: "#222",
+      backgroundColor: "#222",
+      color: "#eee",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
+
       boxShadow: isDragging
         ? "rgb(63 63 68 / 5%) 0px 2px 0px 2px, rgb(34 33 81 / 15%) 0px 2px 3px 2px"
         : "rgb(63 63 68 / 5%) 0px 0px 0px 1px, rgb(34 33 81 / 15%) 0px 1px 3px 0px",
-      transform: isDragging ? "scale(1.05)" : "scale(1)",
+      transform: isDragging
+        ? "scale(1.05) rotate(10deg)"
+        : "scale(1) rotate(0deg)",
       ...style,
     };
-
-    // const svg =
-    // '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-activity-square"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M17 12h-2l-2 5-2-10-2 5H7"/></svg>';
 
     return (
       <div ref={ref} style={inlineStyles} {...props}>
@@ -42,7 +42,7 @@ const Item = forwardRef<HTMLDivElement, ItemProps>(
             }}
             src={`data:image/svg+xml;utf8,${encodeURIComponent(svg || "")}`}
           />
-          <div>{id + name}</div>
+          <div>{name}</div>
         </div>
       </div>
     );

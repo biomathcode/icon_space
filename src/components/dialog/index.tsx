@@ -30,7 +30,7 @@ export default function Dialog({ setFolder }: { setFolder: any }) {
         />
 
         <div className="flex gap-5">
-          <Ariakit.Button
+          <Ariakit.DialogDismiss
             as="button"
             onClick={async () => {
               const newfolder = await insertFolder(name);
@@ -40,7 +40,7 @@ export default function Dialog({ setFolder }: { setFolder: any }) {
             className="button"
           >
             Confirm
-          </Ariakit.Button>
+          </Ariakit.DialogDismiss>
           <Ariakit.DialogDismiss className="button">
             Cancel
           </Ariakit.DialogDismiss>

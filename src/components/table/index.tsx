@@ -11,6 +11,7 @@ type SvgData = {
   name: string;
   svg: string;
   tags?: string[];
+  actions?: any;
 };
 
 const columnHelper = createColumnHelper<SvgData>();
@@ -39,6 +40,11 @@ const columns = [
         )}`}
       />
     ),
+  }),
+  columnHelper.accessor("actions", {
+    header: "Optimise",
+    footer: (info) => info.column.id,
+    cell: (props) => <button onClick={() => alert("hello")}>🪄</button>,
   }),
 ];
 

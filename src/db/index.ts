@@ -19,6 +19,7 @@ export const handleInitializeDatabase = async () => {
         id INTEGER PRIMARY KEY,
         name TEXT NOT NULL,
         svg TEXT NOT NULL
+        index INTEGER NOT NULL, 
       );
     `);
 
@@ -28,6 +29,38 @@ export const handleInitializeDatabase = async () => {
           name TEXT NOT NUll
 
         )
+  `);
+
+  await db.execute(`
+  CREATE TABLE IF NOT EXISTS FolderIcons (
+    folder_id INTEGER,
+    icon_id INTEGER,
+    PRIMARY KEY (folder_id, icon_id),
+    FOREIGN KEY (folder_id) REFERENCES folders(id) ON DELETE CASCADE,
+    FOREIGN KEY (icon_id) REFERENCES icons(id) ON DELETE CASCADE
+);
+  
+  `);
+
+  // create tags
+  await db.execute(`
+  CREATE TABLE IF NOT EXISTS tags (
+    id INTEGER PRIMARY KEY,
+    name TEXT NOT NULL
+);
+  `);
+
+  // create tags icon
+  // Table for Icons-Tags relationship (Many-to-Many)
+
+  await db.execute(`
+CREATE TABLE IF NOT EXISTS IconTags (
+    icon_id INTEGER,
+    tag_id INTEGER,
+    PRIMARY KEY (icon_id, tag_id),
+    FOREIGN KEY (icon_id) REFERENCES icons(id) ON DELETE CASCADE,
+    FOREIGN KEY (tag_id) REFERENCES tags(id) ON DELETE CASCADE
+);
   `);
 };
 

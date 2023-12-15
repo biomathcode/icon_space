@@ -18,23 +18,25 @@ import {
 import Grid from "./Grid";
 import SortableItem from "./SortableItem";
 import Item from "./item";
+import toast from "react-hot-toast";
+import { writeText } from "@tauri-apps/api/clipboard";
+
+import RectangleSelection from "react-rectangle-selection";
 
 const GridContainer = ({
   items,
   setItems,
   selectedId,
   setSelectedId,
+  selFolder,
 }: {
   items: any;
   setItems: any;
   selectedId: any;
   setSelectedId: any;
+  selFolder: any;
 }) => {
-  // const [items, setItems] = useState(
-  //   Array.from({ length: 20 }, (_, i) => (i + 1).toString())
-  // );
-
-  const [sort, setSort] = useState(true);
+  const [sort, setSort] = useState(false);
   const [activeId, setActiveId] = useState<string | null>(null);
   const sensors = useSensors(
     useSensor(MouseSensor, {
@@ -69,6 +71,22 @@ const GridContainer = ({
     setActiveId(null);
   }, []);
 
+  const copyToClipboard = async (text: string) => {
+    try {
+      // Use the clipboard API to write text to the clipboard
+      await writeText(text);
+
+      // Optionally, you can notify the user that the text has been copied
+      // or perform any other action after successful copying.
+      console.log("Text copied to clipboard:", text);
+      toast.success("Copied");
+    } catch (error) {
+      console.error("Error copying to clipboard:", error);
+    }
+  };
+
+  const [select, setSelect] = useState({});
+
   return (
     <DndContext
       sensors={sensors}
@@ -82,9 +100,10 @@ const GridContainer = ({
         <Grid columns={5}>
           {items.map((item: any) => (
             <SortableItem
-              onClick={() =>
-                setSelectedId(selectedId !== item.id ? item.id : "")
-              }
+              onClick={async () => {
+                setSelectedId(selectedId !== item.id ? item.id : "");
+                await copyToClipboard(item.svg);
+              }}
               key={item.id}
               id={item.id}
               name={item.name}

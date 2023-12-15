@@ -26,6 +26,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hot-toast": "^2.4.1",
+    "react-rectangle-selection": "^1.0.4",
     "svg-to-jsx": "^1.0.4",
     "tauri-plugin-sql-api": "github:tauri-apps/tauri-plugin-sql#v1",
     "zustand": "^4.4.7"

@@ -8,21 +8,15 @@ import TableView from "../table";
 import Grid from "../grid/Grid";
 import GridContainer from "../grid";
 
-function Main({ data, setData }: { data: any; setData: any }) {
-  const copyToClipboard = async (text: string) => {
-    try {
-      // Use the clipboard API to write text to the clipboard
-      await writeText(text);
-
-      // Optionally, you can notify the user that the text has been copied
-      // or perform any other action after successful copying.
-      console.log("Text copied to clipboard:", text);
-      toast.success("Copied");
-    } catch (error) {
-      console.error("Error copying to clipboard:", error);
-    }
-  };
-
+function Main({
+  data,
+  setData,
+  selFolder,
+}: {
+  data: any;
+  setData: any;
+  selFolder: any;
+}) {
   const DeleteIcon = async (id: number) => {
     try {
       console.log("icon id", id);
@@ -56,7 +50,10 @@ function Main({ data, setData }: { data: any; setData: any }) {
         setItems={setData}
         selectedId={selectedId}
         setSelectedId={setSelectedId}
+        selFolder={selFolder}
       />
+
+      {/* <TableView /> */}
 
       {/* <ul
         className="row"
