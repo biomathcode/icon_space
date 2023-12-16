@@ -34,7 +34,7 @@ function Main({
     }
   };
 
-  const [selectedId, setSelectedId] = useState();
+  const [selectedId, setSelectedId] = useState("");
   return (
     <div
       style={{

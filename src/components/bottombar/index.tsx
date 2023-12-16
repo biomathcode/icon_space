@@ -32,9 +32,22 @@ function BottomBar({
 
     fetchData();
   }, [selectedId]);
-  const handleExportSvg = async (svgContent: string) => {
+  const handleExportSvg = async (svgContent: string, name: string) => {
     try {
-      await writeFile("example.svg", svgContent, {
+      await writeFile(name + ".svg", svgContent, {
+        dir: BaseDirectory.Desktop,
+      });
+
+      console.log(BaseDirectory);
+    } catch (error) {
+      console.error("Failed to export SVG:", error);
+      // Handle the error as needed
+    }
+  };
+
+  const handleExportPng = async (svgContent: string, name: string) => {
+    try {
+      await writeFile(name + ".png", svgContent, {
         dir: BaseDirectory.Desktop,
       });
 
@@ -76,11 +89,21 @@ function BottomBar({
       </div>
 
       <div className="flex">
-        <button onClick={() => handleExportSvg(data && data[0]?.svg)}>
+        <button
+          onClick={() =>
+            handleExportSvg(data && data[0]?.svg, data && data[0]?.name)
+          }
+        >
           Download Svg
         </button>
 
-        {/* <button onClick={}>Download Png</button> */}
+        <button
+          onClick={() =>
+            handleExportPng(data && data[0].svg, data && data[0].name)
+          }
+        >
+          Download Png
+        </button>
       </div>
 
       <CodeEditor svg={data && data[0]?.svg} />

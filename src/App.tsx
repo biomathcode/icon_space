@@ -15,6 +15,7 @@ import {
 } from "./db";
 import Sidebar from "./components/sidebar";
 import Main from "./components/main";
+import Fuse from "fuse.js";
 
 function App() {
   const initialData = [
@@ -76,7 +77,6 @@ function App() {
   }, []);
 
   const [selFolder, setSelFolder] = useState(1);
-
 
   return (
     <div className="container">

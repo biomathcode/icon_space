@@ -10,9 +10,13 @@ function Search({ data, setData }: { data: any; setData: any }) {
     const newSearchTerm = event.target.value;
     setSearchTerm(newSearchTerm);
 
+    // console.log("search", fuse.search(event.target.value));
+
+    // const newData = fuse.search(newSearchTerm.trim()).map((e) => e.item);
+
     // Filter the gridData based on the search term
     const filteredData = data.filter((item: any) =>
-      item.name.toLowerCase().includes(newSearchTerm.toLowerCase())
+      item.name.toLowerCase().includes(newSearchTerm.trim().toLowerCase())
     );
 
     // Update the grid data with the filtered results
