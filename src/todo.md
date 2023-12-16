@@ -1,34 +1,30 @@
-- [X] Svg Viewer
-- [ ] svg to jsx
-- [X] Drag and Drop to add to collection
-- [X] Copy to Clipboard 
-- [ ] Svg code viewer;
-- [X] Setup database
 
+- [ ] svg to jsx
 
 ### Create a good API with database;
 
 Take Copy 
 
-
-
-
 ### Good UI Elements To have
-- [ ] Create a table/ Grid view with react-table 
-- [ ] Add Support for indexing
-- [ ] Add Support for filtering
+- [X] Create a table/ Grid view with react-table 
+- [X] Add Support for indexing
+- [X] Add Support for filtering
+- [X] Bottom Bar
+- [X] Confirm Dialog
+- [X] Buttons 
+- [X] Icon Buttons - Delete, 
+- [X] Folder feature
+- [X] Svg Viewer
+- [X] Drag and Drop to add to collection
+- [X] Copy to Clipboard 
+- [X] Svg code viewer;
+- [X] Setup database
+
+
+
 - [ ] Update copy as with svelte, vue, jxs, svg,png,
 - [ ] Download as svg, png
-
-- [ ] cmd + k command menu
-- [ ] Bottom Bar
-- [ ] Confirm Dialog
-- [ ] Buttons 
-- [ ] Icon Buttons - Delete, 
-- [ ] Folder feature
 - [ ] Input Elements
-
-
 - [ ] We can use react-table pin row option to create a group export option
 - [ ]  
 

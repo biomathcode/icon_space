@@ -19,7 +19,7 @@ export const handleInitializeDatabase = async () => {
         id INTEGER PRIMARY KEY,
         name TEXT NOT NULL,
         svg TEXT NOT NULL
-        index INTEGER NOT NULL, 
+ 
       );
     `);
 

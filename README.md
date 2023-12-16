@@ -17,6 +17,7 @@ Icon Space is a simple application that allows users to store and manage SVG ico
 - Folders
 - Search
 - Code Editor
+- Grid View
 - Optimize Svg (working)
 - Group Export(comming Soon)
 - Animation (comming Soon)

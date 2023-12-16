@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import CodeEditor from "../editor/newEditor";
 import { getIconById } from "../../db";
+import { BaseDirectory, writeFile } from "@tauri-apps/api/fs";
+import { invoke } from "@tauri-apps/api";
 
 function BottomBar({
   selectedId,
@@ -30,6 +32,18 @@ function BottomBar({
 
     fetchData();
   }, [selectedId]);
+  const handleExportSvg = async (svgContent: string) => {
+    try {
+      await writeFile("example.svg", svgContent, {
+        dir: BaseDirectory.Desktop,
+      });
+
+      console.log(BaseDirectory);
+    } catch (error) {
+      console.error("Failed to export SVG:", error);
+      // Handle the error as needed
+    }
+  };
   return (
     <div
       style={{
@@ -59,6 +73,14 @@ function BottomBar({
         onClick={() => setSelectedId("")}
       >
         X
+      </div>
+
+      <div className="flex">
+        <button onClick={() => handleExportSvg(data && data[0]?.svg)}>
+          Download Svg
+        </button>
+
+        {/* <button onClick={}>Download Png</button> */}
       </div>
 
       <CodeEditor svg={data && data[0]?.svg} />
