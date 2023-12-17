@@ -6,8 +6,8 @@
     "distDir": "../dist"
   },
   "package": {
-    "productName": "icon_space",
-    "version": "0.0.1"
+    "productName": "IconSpace",
+    "version": "0.0.2"
   },
   "tauri": {
     "allowlist": {

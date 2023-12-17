@@ -6,6 +6,7 @@ import { Toaster, toast } from "react-hot-toast";
 import { getAllIcons, handleInitializeDatabase, insertIcon } from "./db";
 import Sidebar from "./components/sidebar";
 import Main from "./components/main";
+import useSidebarStore from "./store/useSidebarStore";
 
 function App() {
   const initialData = [

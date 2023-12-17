@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Logo from "../../assets/logo.svg";
 import { getAllFolders } from "../../db";
 import Dialog from "../dialog";
+import useSidebarStore from "../../store/useSidebarStore";
 
 function Sidebar({
   selFolder,
@@ -33,11 +34,13 @@ function Sidebar({
     };
     init();
   }, []);
+
+  const { isOpen } = useSidebarStore();
   return (
     <div
       style={{
         position: "absolute",
-        left: "0px",
+        left: isOpen ? "0px" : "-200px",
         top: "0px",
         height: "100vh",
         minWidth: "150px",
@@ -47,6 +50,7 @@ function Sidebar({
         minHeight: "100vh",
         background: "#222",
         overflow: "scroll",
+        transition: "all ease-in 216ms",
       }}
     >
       <div

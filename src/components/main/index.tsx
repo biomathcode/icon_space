@@ -3,6 +3,7 @@ import BottomBar from "../bottombar";
 import { useState } from "react";
 
 import GridContainer from "../grid";
+import useSidebarStore from "../../store/useSidebarStore";
 
 function Main({
   data,
@@ -31,12 +32,15 @@ function Main({
   // };
 
   const [selectedId, setSelectedId] = useState("");
+
+  const { isOpen } = useSidebarStore();
   return (
     <div
       style={{
         overflow: "scroll",
-        marginLeft: "190px",
+        marginLeft: isOpen ? "190px" : "0px",
         maxHeight: "100vh",
+        transform: "all linear 300ms",
       }}
     >
       <HeaderArea data={data} setData={setData} />
