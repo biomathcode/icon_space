@@ -2,9 +2,11 @@
 
 import { useEffect, useState } from "react";
 import CodeEditor from "../editor/index";
-import { getIconById } from "../../db";
+import { getIconById, updateIconSvgById } from "../../db";
 import { BaseDirectory, writeFile } from "@tauri-apps/api/fs";
 import getSVGColors from "./utils";
+import { optmiseSvg } from "../utils";
+import { save } from "@tauri-apps/api/dialog";
 
 function BottomBar({
   selectedId,
@@ -99,13 +101,38 @@ function BottomBar({
           Download Svg
         </button>
 
-        {/* <button
-          onClick={() =>
-            handleExportPng(data && data[0].svg, data && data[0].name)
-          }
+        <button
+          onClick={async () => {
+            const el = optmiseSvg(data && data[0]?.svg);
+
+            await updateIconSvgById(data[0].id, el);
+
+            console.log(el);
+          }}
         >
-          Download Png
-        </button> */}
+          optimise
+        </button>
+
+        <button
+          onClick={async () => {
+            const filepath = await save({
+              defaultPath: data[0].name,
+              filters: [
+                {
+                  name: data[0]?.name,
+                  extensions: ["svg"],
+                },
+              ],
+            });
+
+            console.log(filepath);
+            if (filepath) {
+              await writeFile(filepath, data[0]?.svg);
+            }
+          }}
+        >
+          Save
+        </button>
       </div>
       <div className="flex gap-5">
         {colors &&
@@ -122,7 +149,7 @@ function BottomBar({
           ))}
       </div>
 
-      {/* <CodeEditor svg={data && data[0]?.svg} /> */}
+      <CodeEditor svg={data && data[0]?.svg} />
     </div>
   );
 }

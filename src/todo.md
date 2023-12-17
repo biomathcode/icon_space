@@ -68,3 +68,47 @@ https://github.com/daybrush/scenejs-timeline/tree/master/packages/react-scenejs-
 https://github.com/LitoMore/simple-icons-figma
 
 https://github.com/canva-sdks/canva-apps-sdk-starter-kit
+
+https://github.com/gregberge/svgr
+
+@iconify/tools
+
+## SVG animation with States - like click , hover, press
+
+example: https://codepen.io/mikemjharris/post/svg-toggling
+
+
+```html
+<animateTransform attributeType="xml"
+    attributeName="transform"
+    type="rotate"
+    from="360 24.69 35.778"
+    to="0 24.69 35.778"
+    dur="2s"
+    begin="team.mouseover" 
+    end="team.mouseout"
+    repeatCount="indefinite"
+/>
+```
+
+- it's better to use css to animate as SMIL is deprecated 
+
+https://css-tricks.com/smil-is-dead-long-live-smil-a-guide-to-alternatives-to-smil-features/
+
+
+
+## Resources on Animated Icons Library
+
+https://useanimations.com/#explore
+
+https://motionarray.com/
+
+https://getloaf.io/
+
+
+## Some Ideas
+
+- Color picker in editor, iterate over strings, if string is Color format, add a span box which would have a background of the  color, Onclick span should open a color picker, on changing the color, string should update
+- Update number picker
+- Deg picker for rotation
+- 

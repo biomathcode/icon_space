@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import Database from "tauri-plugin-sql-api";
 
 export const databaseName = "track3.db";
@@ -236,6 +237,31 @@ export const updateIconNameById = async (
     );
 
     console.log(`Icon with id ${id} renamed to ${newName} successfully.`);
+  } catch (error) {
+    console.error(`Error renaming icon with id ${id}:`, error);
+    throw error;
+  }
+};
+
+export const updateIconSvgById = async (
+  id: number,
+  svg: string
+): Promise<void> => {
+  const db = await getDatabase();
+
+  try {
+    await db.execute(
+      `
+      UPDATE icons
+      SET svg = ?
+      WHERE id = ?
+    `,
+      [svg, id]
+    );
+
+    toast.success("Updated Icon with name");
+
+    console.log(`Icon with id ${id} renamed to ${svg} successfully.`);
   } catch (error) {
     console.error(`Error renaming icon with id ${id}:`, error);
     throw error;
