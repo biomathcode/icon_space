@@ -2,20 +2,10 @@ import { useEffect, useState } from "react";
 import { readTextFile } from "@tauri-apps/api/fs";
 import "./App.css";
 import { listen } from "@tauri-apps/api/event";
-import { writeText } from "@tauri-apps/api/clipboard";
 import { Toaster, toast } from "react-hot-toast";
-import {
-  addDummyData,
-  deleteAllFolders,
-  deleteAllRows,
-  deleteIconById,
-  getAllIcons,
-  handleInitializeDatabase,
-  insertIcon,
-} from "./db";
+import { getAllIcons, handleInitializeDatabase, insertIcon } from "./db";
 import Sidebar from "./components/sidebar";
 import Main from "./components/main";
-import Fuse from "fuse.js";
 
 function App() {
   const initialData = [

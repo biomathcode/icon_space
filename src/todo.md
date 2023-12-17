@@ -19,14 +19,13 @@ Take Copy
 - [X] Copy to Clipboard 
 - [X] Svg code viewer;
 - [X] Setup database
+- [X] Download as svg, png
 
 
 
 - [ ] Update copy as with svelte, vue, jxs, svg,png,
-- [ ] Download as svg, png
 - [ ] Input Elements
 - [ ] We can use react-table pin row option to create a group export option
-- [ ]  
 
 ### Info Element
 - [ ] Shortcut Buttons
@@ -64,3 +63,8 @@ https://microsoft.github.io/monaco-editor/typedoc/index.html
 https://github.com/salimbeni1/svg-animator
 
 https://github.com/daybrush/scenejs-timeline/tree/master/packages/react-scenejs-timeline
+
+
+https://github.com/LitoMore/simple-icons-figma
+
+https://github.com/canva-sdks/canva-apps-sdk-starter-kit

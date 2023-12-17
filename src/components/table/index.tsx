@@ -44,7 +44,7 @@ const columns = [
   columnHelper.accessor("actions", {
     header: "Optimise",
     footer: (info) => info.column.id,
-    cell: (props) => <button onClick={() => alert("hello")}>🪄</button>,
+    cell: () => <button onClick={() => alert("hello")}>🪄</button>,
   }),
 ];
 
@@ -64,7 +64,7 @@ const defaultData: SvgData[] = [
 ];
 
 function TableView() {
-  const [data, setData] = useState(() => [...defaultData]);
+  const [data, _] = useState(() => [...defaultData]);
 
   const table = useReactTable({
     data,

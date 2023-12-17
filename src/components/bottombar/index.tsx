@@ -1,10 +1,10 @@
 //Todo: use click away to set the selectedId
 
 import { useEffect, useState } from "react";
-import CodeEditor from "../editor/newEditor";
+import CodeEditor from "../editor/index";
 import { getIconById } from "../../db";
 import { BaseDirectory, writeFile } from "@tauri-apps/api/fs";
-import { invoke } from "@tauri-apps/api";
+import getSVGColors from "./utils";
 
 function BottomBar({
   selectedId,
@@ -19,6 +19,8 @@ function BottomBar({
     svg: "<svg></svg>",
   });
 
+  const [colors, setColors] = useState([]);
+
   useEffect(() => {
     async function fetchData() {
       let newdata = (await getIconById(Number(selectedId))) as any;
@@ -32,6 +34,18 @@ function BottomBar({
 
     fetchData();
   }, [selectedId]);
+
+  useEffect(() => {
+    async function fetchColors() {
+      if (data) {
+        const colors = (await getSVGColors(data[0]?.svg || "")) as any;
+        console.log("colors", colors?.fills);
+        setColors(colors?.fills);
+      }
+    }
+
+    fetchColors();
+  }, [selectedId, data]);
   const handleExportSvg = async (svgContent: string, name: string) => {
     try {
       await writeFile(name + ".svg", svgContent, {
@@ -45,18 +59,6 @@ function BottomBar({
     }
   };
 
-  const handleExportPng = async (svgContent: string, name: string) => {
-    try {
-      await writeFile(name + ".png", svgContent, {
-        dir: BaseDirectory.Desktop,
-      });
-
-      console.log(BaseDirectory);
-    } catch (error) {
-      console.error("Failed to export SVG:", error);
-      // Handle the error as needed
-    }
-  };
   return (
     <div
       style={{
@@ -97,16 +99,30 @@ function BottomBar({
           Download Svg
         </button>
 
-        <button
+        {/* <button
           onClick={() =>
             handleExportPng(data && data[0].svg, data && data[0].name)
           }
         >
           Download Png
-        </button>
+        </button> */}
+      </div>
+      <div className="flex gap-5">
+        {colors &&
+          colors?.map((e: string) => (
+            <div
+              key={e}
+              style={{
+                background: e,
+                width: "40px",
+                height: "40px",
+                border: "1px solid #eee",
+              }}
+            ></div>
+          ))}
       </div>
 
-      <CodeEditor svg={data && data[0]?.svg} />
+      {/* <CodeEditor svg={data && data[0]?.svg} /> */}
     </div>
   );
 }

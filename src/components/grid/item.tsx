@@ -1,4 +1,4 @@
-import React, { forwardRef, HTMLAttributes, CSSProperties } from "react";
+import { forwardRef, HTMLAttributes, CSSProperties } from "react";
 
 export type ItemProps = HTMLAttributes<HTMLDivElement> & {
   id: string;

@@ -41,3 +41,5 @@ function downloadPNG(size: number, name: string) {
     downloadData(`${name}.png`, canvas.toDataURL("image/png"));
   };
 }
+
+export { downloadData, downloadPNG, downloadSVG, copyDataUrl, copySVG };

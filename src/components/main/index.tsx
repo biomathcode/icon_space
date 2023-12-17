@@ -1,11 +1,7 @@
-import { writeText } from "@tauri-apps/api/clipboard";
-import { deleteIconById } from "../../db";
-import { toast } from "react-hot-toast";
 import HeaderArea from "../header";
 import BottomBar from "../bottombar";
 import { useState } from "react";
-import TableView from "../table";
-import Grid from "../grid/Grid";
+
 import GridContainer from "../grid";
 
 function Main({
@@ -17,22 +13,22 @@ function Main({
   setData: any;
   selFolder: any;
 }) {
-  const DeleteIcon = async (id: number) => {
-    try {
-      console.log("icon id", id);
-      await deleteIconById(Number(id));
+  // const DeleteIcon = async (id: number) => {
+  //   try {
+  //     console.log("icon id", id);
+  //     await deleteIconById(Number(id));
 
-      const filteredMap = data.filter((e: any) => e.id !== id);
+  //     const filteredMap = data.filter((e: any) => e.id !== id);
 
-      console.log("this is the filterdMap", filteredMap);
+  //     console.log("this is the filterdMap", filteredMap);
 
-      toast.success("Icon Deleted");
+  //     toast.success("Icon Deleted");
 
-      setData(filteredMap);
-    } catch (e) {
-      console.error("Error Deleting element:", e);
-    }
-  };
+  //     setData(filteredMap);
+  //   } catch (e) {
+  //     console.error("Error Deleting element:", e);
+  //   }
+  // };
 
   const [selectedId, setSelectedId] = useState("");
   return (

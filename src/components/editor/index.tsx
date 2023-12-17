@@ -1,22 +1,42 @@
-import { useState, useCallback } from "react";
+import Editor from "@monaco-editor/react";
+import { useEffect, useState } from "react";
 
-import CodeMirror from "@uiw/react-codemirror";
+function CodeEditor({ svg }: { svg: string }) {
+  const [code, setCode] = useState(svg);
 
-import { xml } from "@codemirror/lang-xml";
-
-export const Editor = ({ svg }: any) => {
-  const [value, setValue] = useState(svg);
-  const onChange = useCallback((val: any) => {
-    console.log("val:", val);
-    setValue(val);
-  }, []);
-
+  useEffect(() => {
+    console.log("this is svg", svg);
+    setCode(svg);
+  }, [svg]);
   return (
-    <CodeMirror
-      value={value}
-      height="200px"
-      extensions={[xml()]}
-      onChange={onChange}
-    />
+    svg && (
+      <Editor
+        onMount={(editor) => {
+          editor.getAction("editor.action.formateDocument")?.run();
+        }}
+        height="200px"
+        defaultLanguage="xml"
+        defaultValue={svg}
+        value={code}
+        theme="vs-dark"
+        width={"500px"}
+        line={1}
+        onChange={(value) => {
+          setCode(value as string);
+        }}
+        options={{
+          minimap: {
+            enabled: false,
+          },
+          formatOnPaste: true,
+          formatOnType: true,
+          wrappingStrategy: "simple",
+          wordWrap: "on",
+          suggestFontSize: 24,
+        }}
+      />
+    )
   );
-};
+}
+
+export default CodeEditor;

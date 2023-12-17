@@ -1,6 +1,6 @@
 use actix_web::{ get, App, HttpResponse, HttpServer, Responder, web };
 
-use sqlx::{ SqlitePool, Row, FromRow };
+use sqlx::{ SqlitePool, FromRow };
 use tauri::{ api::path::{ BaseDirectory, resolve_path }, Manager };
 use serde::{ Deserialize, Serialize };
 

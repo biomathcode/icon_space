@@ -1,4 +1,4 @@
-import React, { FC, useState, useCallback } from "react";
+import { useState, useCallback } from "react";
 import {
   DndContext,
   closestCenter,
@@ -21,14 +21,11 @@ import Item from "./item";
 import toast from "react-hot-toast";
 import { writeText } from "@tauri-apps/api/clipboard";
 
-import RectangleSelection from "react-rectangle-selection";
-
 const GridContainer = ({
   items,
   setItems,
   selectedId,
   setSelectedId,
-  selFolder,
 }: {
   items: any;
   setItems: any;
@@ -36,7 +33,7 @@ const GridContainer = ({
   setSelectedId: any;
   selFolder: any;
 }) => {
-  const [sort, setSort] = useState(false);
+  // const [sort, setSort] = useState(false);
   const [activeId, setActiveId] = useState<string | null>(null);
   const sensors = useSensors(
     useSensor(MouseSensor, {
@@ -51,9 +48,6 @@ const GridContainer = ({
     setActiveId(event.active.id as string);
   }, []);
   const handleDragEnd = useCallback((event: DragEndEvent) => {
-    if (sort) {
-      return;
-    }
     const { active, over } = event;
 
     if (active?.id !== over?.id) {
@@ -84,8 +78,6 @@ const GridContainer = ({
       console.error("Error copying to clipboard:", error);
     }
   };
-
-  const [select, setSelect] = useState({});
 
   return (
     <DndContext
