@@ -173,6 +173,48 @@ export const insertFolder = async (name: string) => {
   return await db.select(`SELECT id, name FROM folders `);
 };
 
+export const updateFolderNameById = async (
+  id: number,
+  newName: string
+): Promise<void> => {
+  const db = await getDatabase();
+
+  try {
+    await db.execute(
+      `
+      UPDATE folders
+      SET name = ?
+      WHERE id = ?
+    `,
+      [newName, id]
+    );
+
+    console.log(`Folder with id ${id} renamed to ${newName} successfully.`);
+  } catch (error) {
+    console.error(`Error renaming icon with id ${id}:`, error);
+    throw error;
+  }
+};
+
+export const deleteFolderById = async (id: number): Promise<void> => {
+  const db = await getDatabase();
+
+  try {
+    await db.execute(
+      `
+      DELETE FROM folders
+      WHERE id = ?
+    `,
+      [id]
+    );
+
+    console.log(`Icon with id ${id} deleted successfully.`);
+  } catch (error) {
+    console.error(`Error deleting icon with id ${id}:`, error);
+    throw error;
+  }
+};
+
 export const deleteIconById = async (id: number): Promise<void> => {
   const db = await getDatabase();
 

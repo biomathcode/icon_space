@@ -7,6 +7,7 @@ import { BaseDirectory, writeFile } from "@tauri-apps/api/fs";
 import getSVGColors from "./utils";
 import { optmiseSvg } from "../utils";
 import { save } from "@tauri-apps/api/dialog";
+import useSidebarStore from "../../store/useSidebarStore";
 
 function BottomBar({
   selectedId,
@@ -61,11 +62,13 @@ function BottomBar({
     }
   };
 
+  const { isOpen } = useSidebarStore();
+
   return (
     <div
       style={{
         position: "absolute",
-        left: "190px",
+        left: isOpen ? "190px" : "0px",
         bottom: "0px",
         height: "200px",
         width: "100%",

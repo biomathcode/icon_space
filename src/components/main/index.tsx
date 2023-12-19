@@ -40,7 +40,7 @@ function Main({
         overflow: "scroll",
         marginLeft: isOpen ? "190px" : "0px",
         maxHeight: "100vh",
-        transform: "all linear 300ms",
+        transform: "all ease-out 300ms",
       }}
     >
       <HeaderArea data={data} setData={setData} />
