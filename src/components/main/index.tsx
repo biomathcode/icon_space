@@ -1,17 +1,17 @@
 import HeaderArea from "../header";
 import BottomBar from "../bottombar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import GridContainer from "../grid";
 import useSidebarStore from "../../store/useSidebarStore";
 
 function Main({
   data,
-  setData,
+
   selFolder,
 }: {
   data: any;
-  setData: any;
+
   selFolder: any;
 }) {
   // const DeleteIcon = async (id: number) => {
@@ -33,6 +33,8 @@ function Main({
 
   const [selectedId, setSelectedId] = useState("");
 
+  useEffect(() => {}, [data]);
+
   const { isOpen } = useSidebarStore();
   return (
     <div
@@ -43,11 +45,10 @@ function Main({
         transform: "all ease-out 300ms",
       }}
     >
-      <HeaderArea data={data} setData={setData} />
+      <HeaderArea data={data} />
 
       <GridContainer
         items={data}
-        setItems={setData}
         selectedId={selectedId}
         setSelectedId={setSelectedId}
         selFolder={selFolder}

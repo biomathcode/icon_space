@@ -2,7 +2,7 @@ import useSidebarStore from "../../store/useSidebarStore";
 import Search from "./Search";
 import SubMenu from "./SubMenu";
 
-function HeaderArea({ data, setData }: { data: any; setData: any }) {
+function HeaderArea({ data }: { data: any }) {
   const { isOpen, toggleSidebar } = useSidebarStore();
   return (
     <section
@@ -56,7 +56,7 @@ function HeaderArea({ data, setData }: { data: any; setData: any }) {
           </svg>
         )}
       </button>
-      <Search data={data} setData={setData} />
+      {/* <Search data={data} setData={setData} /> */}
       <SubMenu />
     </section>
   );

@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import {
   DndContext,
   closestCenter,
@@ -20,20 +20,22 @@ import SortableItem from "./SortableItem";
 import Item from "./item";
 import toast from "react-hot-toast";
 import { writeText } from "@tauri-apps/api/clipboard";
+import { swapIconIndexInDatabase } from "../../db";
 
 const GridContainer = ({
   items,
-  setItems,
+
   selectedId,
   setSelectedId,
 }: {
   items: any;
-  setItems: any;
+
   selectedId: any;
   setSelectedId: any;
   selFolder: any;
 }) => {
   // const [sort, setSort] = useState(false);
+
   const [activeId, setActiveId] = useState<string | null>(null);
   const sensors = useSensors(
     useSensor(MouseSensor, {
@@ -45,18 +47,20 @@ const GridContainer = ({
   );
 
   const handleDragStart = useCallback((event: DragStartEvent) => {
+    console.log("id", event.active.id);
     setActiveId(event.active.id as string);
   }, []);
   const handleDragEnd = useCallback((event: DragEndEvent) => {
     const { active, over } = event;
 
     if (active?.id !== over?.id) {
-      setItems((items: any) => {
-        const oldIndex = items.findIndex((item: any) => item.id === active?.id);
-        const newIndex = items.findIndex((item: any) => item.id === over?.id);
+      console.log("items", items);
+      const oldIndex = items.findIndex((item: any) => item.id === active?.id);
+      const newIndex = items.findIndex((item: any) => item.id === over?.id);
 
-        return arrayMove(items, oldIndex, newIndex);
-      });
+      // setItems((items: any) => {
+      //   return arrayMove(items, oldIndex, newIndex);
+      // });
     }
 
     setActiveId(null);
@@ -78,6 +82,8 @@ const GridContainer = ({
       console.error("Error copying to clipboard:", error);
     }
   };
+
+  console.log("grid container item", items);
 
   return (
     <DndContext

@@ -15,54 +15,71 @@ export async function getDatabase(): Promise<Database> {
 
 export const handleInitializeDatabase = async () => {
   const db = await getDatabase();
-  await db.execute(`
-      CREATE TABLE IF NOT EXISTS icons (
+
+  try {
+    await db.execute(`
+    CREATE TABLE IF NOT EXISTS icons (
+      id INTEGER PRIMARY KEY,
+      name TEXT NOT NULL,
+      svg TEXT NOT NULL,
+      indx INTEGER 
+    );
+  `);
+
+    await db.execute(`
+      CREATE TABLE IF NOT EXISTS folders (
         id INTEGER PRIMARY KEY,
         name TEXT NOT NULL,
-        svg TEXT NOT NULL
- 
+        indx INTEGER 
       );
+`);
+
+    await db.execute(`
+    CREATE TABLE IF NOT EXISTS folderIcons (
+      folder_id INTEGER,
+      icon_id INTEGER,
+      PRIMARY KEY (folder_id, icon_id),
+      FOREIGN KEY (folder_id) REFERENCES folders(id) ON DELETE CASCADE,
+      FOREIGN KEY (icon_id) REFERENCES icons(id) ON DELETE CASCADE
+    );
+
     `);
 
-  await db.execute(`
-        CREATE TABLE IF NOT EXISTS folders (
-          id INTEGER PRIMARY KEY,
-          name TEXT NOT NUll
+    // create tags
+    await db.execute(`
+    CREATE TABLE IF NOT EXISTS tags (
+      id INTEGER PRIMARY KEY,
+      name TEXT NOT NULL
+    );
+    `);
 
-        )
-  `);
+    // create tags icon
+    // Table for Icons-Tags relationship (Many-to-Many)
 
-  await db.execute(`
-  CREATE TABLE IF NOT EXISTS FolderIcons (
-    folder_id INTEGER,
-    icon_id INTEGER,
-    PRIMARY KEY (folder_id, icon_id),
-    FOREIGN KEY (folder_id) REFERENCES folders(id) ON DELETE CASCADE,
-    FOREIGN KEY (icon_id) REFERENCES icons(id) ON DELETE CASCADE
-);
-  
-  `);
+    await db.execute(`
+    CREATE TABLE IF NOT EXISTS iconTags (
+      icon_id INTEGER,
+      tag_id INTEGER,
+      PRIMARY KEY (icon_id, tag_id),
+      FOREIGN KEY (icon_id) REFERENCES icons(id) ON DELETE CASCADE,
+      FOREIGN KEY (tag_id) REFERENCES tags(id) ON DELETE CASCADE
+    );
+    `);
 
-  // create tags
-  await db.execute(`
-  CREATE TABLE IF NOT EXISTS tags (
-    id INTEGER PRIMARY KEY,
-    name TEXT NOT NULL
-);
-  `);
-
-  // create tags icon
-  // Table for Icons-Tags relationship (Many-to-Many)
-
-  await db.execute(`
-CREATE TABLE IF NOT EXISTS IconTags (
-    icon_id INTEGER,
-    tag_id INTEGER,
-    PRIMARY KEY (icon_id, tag_id),
-    FOREIGN KEY (icon_id) REFERENCES icons(id) ON DELETE CASCADE,
-    FOREIGN KEY (tag_id) REFERENCES tags(id) ON DELETE CASCADE
-);
-  `);
+    await db.execute(`
+    CREATE TABLE IF NOT EXISTS iconVersions (
+      version_id INTEGER PRIMARY KEY,
+      icon_id INTEGER,
+      parent_version_id INTEGER, -- New column for parent-child relationship
+      name TEXT,
+      svg TEXT,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (icon_id) REFERENCES icons(id) ON DELETE CASCADE,
+      FOREIGN KEY (parent_version_id) REFERENCES iconVersions(version_id) ON DELETE CASCADE
+    );`);
+  } catch (e) {
+    console.log("initializing database error", e);
+  }
 };
 
 export const addDummyData = async () => {
@@ -73,10 +90,12 @@ export const addDummyData = async () => {
     const dummyData = [
       {
         name: "Icon 1",
+        indx: 1,
         svg: '<svg xmlns="http://www.w3.org/2000/svg" version="1.2" baseProfile="tiny" width="47.4" height="40.65" viewBox="21 18.5 158 135.5"><path d="M25,50 l150,0 0,100 -150,0 z" stroke-width="4" stroke="black" fill="rgb(128,224,255)" fill-opacity="1" ></path><path d="M25,50 L175,150 M25,150 L175,50" stroke-width="4" stroke="black" fill="black" ></path><g transform="translate(0,0)" stroke-width="4" stroke="black" fill="none" ><circle cx="100" cy="30" r="7.5" fill="black" ></circle><circle cx="70" cy="30" r="7.5" fill="black" ></circle><circle cx="130" cy="30" r="7.5" fill="black" ></circle></g></svg>',
       },
       {
         name: "Icon 2",
+        indx: 2,
         svg: '<svg xmlns="http://www.w3.org/2000/svg" version="1.2" baseProfile="tiny" width="47.4" height="40.65" viewBox="21 18.5 158 135.5"><path d="M25,50 l150,0 0,100 -150,0 z" stroke-width="4" stroke="black" fill="rgb(128,224,255)" fill-opacity="1" ></path><path d="M25,50 L175,150 M25,150 L175,50" stroke-width="4" stroke="black" fill="black" ></path><g transform="translate(0,0)" stroke-width="4" stroke="black" fill="none" ><circle cx="100" cy="30" r="7.5" fill="black" ></circle><circle cx="70" cy="30" r="7.5" fill="black" ></circle><circle cx="130" cy="30" r="7.5" fill="black" ></circle></g></svg>',
       },
       // Add more dummy data as needed
@@ -95,9 +114,9 @@ export const addDummyData = async () => {
     for (const item of dummyData) {
       const o = await db.execute(
         `
-          INSERT INTO icons (name, svg) VALUES ($1, $2)
+          INSERT INTO icons (name, svg, indx) VALUES ($1, $2, $3)
         `,
-        [item.name, item.svg]
+        [item.name, item.svg, item.indx]
       );
       console.log(o.lastInsertId);
     }
@@ -124,7 +143,8 @@ export const getAllIcons = async () => {
     const db = await getDatabase();
 
     return await db.select(`
-          SELECT id, name, svg FROM icons 
+          SELECT id, name, svg, indx FROM icons 
+          ORDER BY indx ASC;
         `);
   } catch (error) {
     console.error("Error fetching icons:", error);
@@ -145,18 +165,18 @@ export const getAllFolders = async () => {
   }
 };
 
-export const insertIcon = async (name: string, svg: string) => {
+export const insertIcon = async (name: string, svg: string, indx: number) => {
   const db = await getDatabase();
 
   await db.execute(
     `
-  INSERT INTO icons (name, svg) VALUES ($1, $2)
+  INSERT INTO icons (name, svg, indx) VALUES ($1, $2, $3)
 
   `,
-    [name, svg]
+    [name, svg, indx]
   );
 
-  return await db.select(`SELECT id, name, svg FROM icons `);
+  return await db.select(`SELECT id, name, svg, indx FROM icons `);
 };
 
 export const insertFolder = async (name: string) => {
@@ -234,6 +254,25 @@ export const deleteIconById = async (id: number): Promise<void> => {
   }
 };
 
+export const deleteTagById = async (id: number): Promise<void> => {
+  const db = await getDatabase();
+
+  try {
+    await db.execute(
+      `
+      DELETE FROM tags
+      WHERE id = ?
+    `,
+      [id]
+    );
+
+    console.log(`Icon with id ${id} deleted successfully.`);
+  } catch (error) {
+    console.error(`Error deleting icon with id ${id}:`, error);
+    throw error;
+  }
+};
+
 export const deleteAllRows = async () => {
   const db = await getDatabase();
 
@@ -248,6 +287,25 @@ export const deleteAllFolders = async () => {
   return await db.execute(`
   DELETE FROM folders 
   `);
+};
+
+// Function to swap the index positions of two icons in the SQLite database
+export const swapIconIndexInDatabase = async (
+  iconId1: number,
+  iconId2: number,
+  index1: number,
+  index2: number
+) => {
+  const db = await getDatabase();
+
+  return await db.execute(
+    `UPDATE icons SET indx = CASE
+        WHEN id = ? THEN ?
+        WHEN id = ? THEN ?
+      END
+      WHERE id IN (?, ?)`,
+    [iconId1, index2, iconId2, index1, iconId1, iconId2]
+  );
 };
 
 export const getIconById = async (id: number) => {

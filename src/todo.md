@@ -35,6 +35,18 @@ Take Copy
 - [ ] Create a Size slider
 
 
+- [ ] Add Svg version history 
+- [ ] Implement folder drag and drop
+- [ ] Icons drag and drop to folders
+- [ ] Folder selection state 
+- [ ] Folder selected will be in persistent state
+- [ ] Add React flow 
+- [ ] Building an svg animate state
+- [ ] Build timeline for the svg animate
+- [ ] Svg Canvas Editor
+- [ ] 
+
+
 Aim : 
 I want to people to create icons packs, 
 

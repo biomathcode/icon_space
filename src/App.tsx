@@ -7,6 +7,8 @@ import { getAllIcons, handleInitializeDatabase, insertIcon } from "./db";
 import Sidebar from "./components/sidebar";
 import Main from "./components/main";
 import useSidebarStore from "./store/useSidebarStore";
+import { useDatabaseStore } from "./store";
+import useAppStore from "./store/useDatabaseStore";
 
 function App() {
   const initialData = [
@@ -15,16 +17,18 @@ function App() {
       svg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-activity-square"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M17 12h-2l-2 5-2-10-2 5H7"/></svg>',
       name: "activity-square",
       tags: ["medical", "account", "social", "Science", "Shapes"],
+      indx: 1,
     },
     {
       id: "2",
       svg: '<svg xmlns="http://www.w3.org/2000/svg" version="1.2" baseProfile="tiny" width="47.4" height="40.65" viewBox="21 18.5 158 135.5"><path d="M25,50 l150,0 0,100 -150,0 z" stroke-width="4" stroke="black" fill="rgb(128,224,255)" fill-opacity="1" ></path><path d="M25,50 L175,150 M25,150 L175,50" stroke-width="4" stroke="black" fill="black" ></path><g transform="translate(0,0)" stroke-width="4" stroke="black" fill="none" ><circle cx="100" cy="30" r="7.5" fill="black" ></circle><circle cx="70" cy="30" r="7.5" fill="black" ></circle><circle cx="130" cy="30" r="7.5" fill="black" ></circle></g></svg>',
       name: "activity-square",
       tags: ["medical", "account", "social", "Science", "Shapes"],
+      indx: 2,
     },
   ];
 
-  const [data, setData] = useState<any>(initialData);
+  const { icons, setIcons, addIcon } = useAppStore();
 
   useEffect(() => {
     listen("tauri://file-drop", (event: any) => {
@@ -38,13 +42,12 @@ function App() {
 
       readTextFile(event.payload[0])
         .then((e) => {
-          insertIcon(fileName, e).then((el: any) => {
-            console.log("insert return", el);
+          let newIcon = {
+            name: fileName,
+            svg: e,
+          };
 
-            setData([...el]);
-
-            toast.success(" Icon added");
-          });
+          addIcon(newIcon);
         })
         .catch((e) => console.log("error", e));
     });
@@ -59,10 +62,9 @@ function App() {
       console.log("Database initialized.");
 
       console.log("Fetching data...");
-      const data = await getAllIcons();
+      setIcons();
 
-      setData(data);
-      console.log("Data fetched:", data);
+      console.log("Data fetched:", icons);
     };
     init();
   }, []);
@@ -75,7 +77,7 @@ function App() {
 
       <div className="flex gap-5">
         <Sidebar selFolder={selFolder} setSelFolder={setSelFolder} />
-        <Main data={data} setData={setData} selFolder={selFolder} />
+        <Main data={icons} selFolder={selFolder} />
       </div>
     </div>
   );
