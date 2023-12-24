@@ -42,4 +42,56 @@ function downloadPNG(size: number, name: string) {
   };
 }
 
-export { downloadData, downloadPNG, downloadSVG, copyDataUrl, copySVG };
+import { optimize } from "svgo";
+import { writeText } from "@tauri-apps/api/clipboard";
+import toast from "react-hot-toast";
+
+function optmiseSvg(svg: string): string {
+  const result = optimize(svg, {
+    path: "path-to.svg", // recommended
+    multipass: true, // all other config fields are available here
+  });
+
+  const len = new TextEncoder().encode(svg).length;
+  console.log("size: ", bytesToSize(len));
+
+  return result.data as string;
+}
+
+export { optmiseSvg };
+
+export function bytesToSize(bytes: number): string {
+  const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
+  if (bytes === 0) return "n/a";
+  const i = Math.min(
+    Math.floor(Math.log(bytes) / Math.log(1024)),
+    sizes.length - 1
+  );
+  if (i === 0) return `${bytes} ${sizes[i]}`;
+  return `${(bytes / 1024 ** i).toFixed(1)} ${sizes[i]}`;
+}
+//TODO: Since all of the convertion are based on SVGO, It will be great if we can create just one api for using svg in jsx, vue, and svelte
+// TODO: Add function to
+
+const copyToClipboard = async (text: string) => {
+  try {
+    // Use the clipboard API to write text to the clipboard
+    await writeText(text);
+
+    // Optionally, you can notify the user that the text has been copied
+    // or perform any other action after successful copying.
+    console.log("Text copied to clipboard:", text);
+    toast.success("Copied");
+  } catch (error) {
+    console.error("Error copying to clipboard:", error);
+  }
+};
+
+export {
+  downloadData,
+  downloadPNG,
+  downloadSVG,
+  copyDataUrl,
+  copySVG,
+  copyToClipboard,
+};

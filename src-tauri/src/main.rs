@@ -20,6 +20,13 @@ fn greet(name: &str) -> String {
     format!("Hello, {}! You've been greeted from Rust!", name)
 }
 
+// #[tauri::command]
+// fn svg_to_jsx(svg: &str) -> String {
+//     let result = transform(svg.to_string(), Default::default(), Default::default());
+
+//     result
+// }
+
 struct AppState {
     app_name: String,
 }

@@ -114,18 +114,6 @@ button {
   }
 }
 
-.flex {
-  display: flex;
-}
-
-.gap-10 {
-  gap: 10px;
-}
-
-.gap-5 {
-  gap: 5px;
-}
-
 #input-container {
   position: relative;
 }
@@ -338,4 +326,26 @@ dialog
 .dialog[data-enter] {
   opacity: 1;
   transform: scale(1);
+}
+
+// UTILITY- CLASSES
+
+.flex {
+  display: flex;
+}
+
+.gap-10 {
+  gap: 10px;
+}
+
+.gap-5 {
+  gap: 5px;
+}
+
+.flex-start {
+  align-items: flex-start;
+}
+
+.col {
+  flex-direction: column;
 }

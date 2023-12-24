@@ -5,17 +5,12 @@ import CodeEditor from "../editor/index";
 import { getIconById, updateIconSvgById } from "../../db";
 import { BaseDirectory, writeFile } from "@tauri-apps/api/fs";
 import getSVGColors from "./utils";
-import { optmiseSvg } from "../utils";
 import { save } from "@tauri-apps/api/dialog";
 import useSidebarStore from "../../store/useSidebarStore";
+import { copyToClipboard, optmiseSvg } from "../../utils";
+import useAppStore from "../../store";
 
-function BottomBar({
-  selectedId,
-  setSelectedId,
-}: {
-  selectedId: any;
-  setSelectedId: any;
-}) {
+function BottomBar() {
   const [data, setData] = useState<any>({
     id: 1,
     name: "home",
@@ -24,11 +19,13 @@ function BottomBar({
 
   const [colors, setColors] = useState([]);
 
+  const { iconSelected, setIconSelected } = useAppStore();
+
   useEffect(() => {
     async function fetchData() {
-      let newdata = (await getIconById(Number(selectedId))) as any;
+      let newdata = (await getIconById(Number(iconSelected))) as any;
 
-      console.log("svgdata, selectedId", newdata[0], selectedId);
+      console.log("svgdata, selectedId", newdata[0], iconSelected);
 
       if (newdata) {
         setData(newdata);
@@ -36,7 +33,7 @@ function BottomBar({
     }
 
     fetchData();
-  }, [selectedId]);
+  }, [iconSelected]);
 
   useEffect(() => {
     async function fetchColors() {
@@ -48,7 +45,7 @@ function BottomBar({
     }
 
     fetchColors();
-  }, [selectedId, data]);
+  }, [iconSelected, data]);
   const handleExportSvg = async (svgContent: string, name: string) => {
     try {
       await writeFile(name + ".svg", svgContent, {
@@ -68,91 +65,114 @@ function BottomBar({
     <div
       style={{
         position: "absolute",
-        left: isOpen ? "190px" : "0px",
-        bottom: "0px",
-        height: "200px",
         width: "100%",
-        background: "#222",
-        transition: "all ease 216ms",
-        display: selectedId !== "" ? "block" : "none",
+        height: "100%",
+        pointerEvents: "none",
+        zIndex: "999999999",
       }}
     >
       <div
         style={{
-          position: "relative",
-          top: "10px",
-          right: "-78%",
-          width: "25px",
-          height: "25px",
+          position: "absolute",
+          left: isOpen ? "190px" : "0px",
+          bottom: iconSelected !== 0 ? "300px" : "00px",
+          height: "240px",
+          pointerEvents: "all",
+
+          width: "100%",
           background: "#222",
-          color: "#fff",
-          cursor: "pointer",
-          border: "1px solid #eee",
-          borderRadius: "99px",
+          transition: "all ease 216ms",
+          // display: iconSelected !== 0 ? "block" : "none",
+          overflow: "hidden",
         }}
-        onClick={() => setSelectedId("")}
       >
-        X
-      </div>
-
-      <div className="flex">
-        <button
-          onClick={() =>
-            handleExportSvg(data && data[0]?.svg, data && data[0]?.name)
-          }
+        <div
+          style={{
+            position: "absolute",
+            top: "0px",
+            right: "20px",
+            width: "25px",
+            height: "25px",
+            background: "#222",
+            color: "#fff",
+            cursor: "pointer",
+            border: "1px solid #eee",
+            borderRadius: "99px",
+          }}
+          onClick={() => setIconSelected(0)}
         >
-          Download Svg
-        </button>
-
-        <button
-          onClick={async () => {
-            const el = optmiseSvg(data && data[0]?.svg);
-
-            await updateIconSvgById(data[0].id, el);
-
-            console.log(el);
+          X
+        </div>
+        <div
+          style={{
+            display: "flex",
+            gap: "20px",
+            padding: "20px",
           }}
         >
-          optimise
-        </button>
+          <CodeEditor svg={data && data[0]?.svg} />
+          <div className="flex  gap-10">
+            <div className="flex flex-start">
+              <button
+                onClick={async () => {
+                  const el = optmiseSvg(data && data[0]?.svg);
 
-        <button
-          onClick={async () => {
-            const filepath = await save({
-              defaultPath: data[0].name,
-              filters: [
-                {
-                  name: data[0]?.name,
-                  extensions: ["svg"],
-                },
-              ],
-            });
+                  await updateIconSvgById(data[0].id, el);
 
-            console.log(filepath);
-            if (filepath) {
-              await writeFile(filepath, data[0]?.svg);
-            }
-          }}
-        >
-          Save
-        </button>
+                  console.log(el);
+                }}
+              >
+                optimise
+              </button>
+              <button
+                onClick={async () => {
+                  await copyToClipboard(data[0].svg);
+                }}
+              >
+                Copy to clipboard
+              </button>
+
+              <button
+                onClick={async () => {
+                  const filepath = await save({
+                    defaultPath: data[0].name,
+                    filters: [
+                      {
+                        name: data[0]?.name,
+                        extensions: ["svg"],
+                      },
+                    ],
+                  });
+
+                  console.log(filepath);
+                  if (filepath) {
+                    await writeFile(filepath, data[0]?.svg);
+                  }
+                }}
+              >
+                Save
+              </button>
+            </div>
+            <div className="flex gap-10">
+              {colors &&
+                colors?.map((e: string) => (
+                  <div
+                    onClick={async () => {
+                      copyToClipboard(e);
+                    }}
+                    key={e}
+                    style={{
+                      background: e,
+                      width: "40px",
+                      height: "40px",
+                      border: "1px solid #eee",
+                    }}
+                  ></div>
+                ))}
+            </div>
+          </div>
+        </div>
       </div>
-      <div className="flex gap-5">
-        {colors &&
-          colors?.map((e: string) => (
-            <div
-              key={e}
-              style={{
-                background: e,
-                width: "40px",
-                height: "40px",
-                border: "1px solid #eee",
-              }}
-            ></div>
-          ))}
-      </div>
-
-      <CodeEditor svg={data && data[0]?.svg} />
     </div>
   );
 }

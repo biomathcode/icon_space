@@ -73,6 +73,11 @@ interface State extends FeatureFlags {
   iconTags: IconTag[];
   folderIcons: FolderIcon[];
   iconVersions: IconVersion[];
+  iconSelected: number;
+  setIconSelected: (icon_id: number) => void;
+
+  folderSelected: number;
+  setFolderSelected: (folder_id: number) => void;
   setIcons: () => void;
   setFolders: () => void;
   addIcon: (icon: Icon) => void;
@@ -94,6 +99,14 @@ const useAppStore = create<State & FeatureFlags>((set, get) => ({
   iconTags: [],
   folderIcons: [],
   iconVersions: [], // get the icon and get the first version
+  folderSelected: 1,
+  iconSelected: 1,
+  setFolderSelected: (folder_id) => {
+    set({ folderSelected: folder_id });
+  },
+  setIconSelected: (icon_id) => {
+    set({ iconSelected: icon_id });
+  },
   setFolders: async () => {
     const getFolders = (await getAllFolders()) as Folder[];
     set({ folders: getFolders });

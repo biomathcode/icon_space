@@ -22,15 +22,9 @@ import toast from "react-hot-toast";
 import { writeText } from "@tauri-apps/api/clipboard";
 import useAppStore from "../../store/useAppStore";
 
-const GridContainer = ({}: // selectedId,
-// setSelectedId,
-{
-  selectedId?: any;
-  setSelectedId?: any;
-}) => {
-  // const [sort, setSort] = useState(false);
-
-  const { icons, setIcons, swapIcons } = useAppStore();
+const GridContainer = () => {
+  const { icons, setIcons, swapIcons, iconSelected, setIconSelected } =
+    useAppStore();
 
   const [activeId, setActiveId] = useState<string | null>(null);
   const sensors = useSensors(
@@ -92,20 +86,6 @@ const GridContainer = ({}: // selectedId,
     setActiveId(null);
   }, []);
 
-  const copyToClipboard = async (text: string) => {
-    try {
-      // Use the clipboard API to write text to the clipboard
-      await writeText(text);
-
-      // Optionally, you can notify the user that the text has been copied
-      // or perform any other action after successful copying.
-      console.log("Text copied to clipboard:", text);
-      toast.success("Copied");
-    } catch (error) {
-      console.error("Error copying to clipboard:", error);
-    }
-  };
-
   return (
     <DndContext
       sensors={sensors}
@@ -119,11 +99,10 @@ const GridContainer = ({}: // selectedId,
         <Grid columns={10}>
           {icons.map((item: any) => (
             <SortableItem
-              onClick={async () => {
-                // setSelectedId(selectedId !== item.id ? item.id : "");
-                // await copyToClipboard(item.svg);
+              onClick={() => {
+                setIconSelected(item.id);
               }}
-              key={item.indx}
+              key={item.id}
               id={item.id}
               name={item.name}
               svg={item.svg}

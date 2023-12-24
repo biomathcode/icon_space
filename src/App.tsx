@@ -9,9 +9,6 @@ import Main from "./components/main";
 import useAppStore from "./store/useAppStore";
 import { DndContext } from "@dnd-kit/core";
 
-import svg2jsx from "@balajmarius/svg2jsx";
-import convertSvgToJsx from "./utils/svgToJsx";
-
 function App() {
   const { icons, setIcons, addIcon, setFolders } = useAppStore();
 
@@ -58,8 +55,7 @@ function App() {
 
   useEffect(() => {
     if (icons) {
-      const el = convertSvgToJsx(icons[1].svg);
-      console.log(el);
+      console.log(icons[0]);
     }
   }, []);
 

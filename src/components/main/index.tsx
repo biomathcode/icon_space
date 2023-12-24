@@ -23,7 +23,7 @@ function Main() {
     >
       <HeaderArea data={data} />
 
-      <GridContainer selectedId={selectedId} setSelectedId={setSelectedId} />
+      <GridContainer />
 
       {/* <TableView /> */}
 
@@ -87,7 +87,7 @@ function Main() {
       </ul> */}
       {/* <TableView /> */}
 
-      <BottomBar setSelectedId={setSelectedId} selectedId={selectedId} />
+      <BottomBar />
     </div>
   );
 }
