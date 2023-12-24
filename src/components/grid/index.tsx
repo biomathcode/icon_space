@@ -22,6 +22,44 @@ import toast from "react-hot-toast";
 import { writeText } from "@tauri-apps/api/clipboard";
 import useAppStore from "../../store/useAppStore";
 
+// we have support for input
+// number
+// Deg
+// checkbox
+// date
+// file
+// time
+// url
+//
+
+function Tags({ tags }: { tags: any }) {
+  return (
+    <div
+      className="row gap-2"
+      style={{
+        maxWidth: "100px",
+        overflow: "auto",
+        gap: "10px",
+
+        justifyContent: "flex-start",
+      }}
+    >
+      {tags.map((tag: any) => (
+        <div
+          style={{
+            fontSize: "10px",
+            fontWeight: "bold",
+
+            borderRadius: "4px",
+          }}
+        >
+          {tag + "  "}
+        </div>
+      ))}
+    </div>
+  );
+}
+
 const GridContainer = () => {
   const { icons, setIcons, swapIcons, iconSelected, setIconSelected } =
     useAppStore();
@@ -87,40 +125,44 @@ const GridContainer = () => {
   }, []);
 
   return (
-    <DndContext
-      sensors={sensors}
-      collisionDetection={closestCenter}
-      onDragStart={handleDragStart}
-      onDragEnd={handleDragEnd}
-      onDragCancel={handleDragCancel}
-      autoScroll={{ threshold: { x: 0, y: 0.2 } }}
-    >
-      <SortableContext items={icons} strategy={rectSortingStrategy}>
-        <Grid columns={10}>
-          {icons.map((item: any) => (
-            <SortableItem
-              onClick={() => {
-                setIconSelected(item.id);
-              }}
-              key={item.id}
-              id={item.id}
-              name={item.name}
-              svg={item.svg}
+    <>
+      <div className="flex gap-10"></div>
+
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
+        onDragCancel={handleDragCancel}
+        autoScroll={{ threshold: { x: 0, y: 0.2 } }}
+      >
+        <SortableContext items={icons} strategy={rectSortingStrategy}>
+          <Grid columns={10}>
+            {icons.map((item: any) => (
+              <SortableItem
+                onClick={() => {
+                  setIconSelected(item.id);
+                }}
+                key={item.id}
+                id={item.id}
+                name={item.name}
+                svg={item.svg}
+              />
+            ))}
+          </Grid>
+        </SortableContext>
+        <DragOverlay adjustScale style={{ transformOrigin: "0 0 " }}>
+          {activeId ? (
+            <Item
+              name={icons?.find((e: any) => e.id === activeId)?.name}
+              svg={icons?.find((e: any) => e.id === activeId)?.svg}
+              id={activeId}
+              isDragging
             />
-          ))}
-        </Grid>
-      </SortableContext>
-      <DragOverlay adjustScale style={{ transformOrigin: "0 0 " }}>
-        {activeId ? (
-          <Item
-            name={icons?.find((e: any) => e.id === activeId)?.name}
-            svg={icons?.find((e: any) => e.id === activeId)?.svg}
-            id={activeId}
-            isDragging
-          />
-        ) : null}
-      </DragOverlay>
-    </DndContext>
+          ) : null}
+        </DragOverlay>
+      </DndContext>
+    </>
   );
 };
 

@@ -116,4 +116,21 @@ https://getloaf.io/
 - Color picker in editor, iterate over strings, if string is Color format, add a span box which would have a background of the  color, Onclick span should open a color picker, on changing the color, string should update
 - Update number picker
 - Deg picker for rotation
-- 
+
+
+## Design Color Palette
+
+
+
+
+-- Tags Colors --
+Light Gray | TC: #373530 | BG: -
+Gray | TC: #787774 | BG: #F1F1EF
+Brown | TC: #976D57 | BG: #F3EEEE
+Orange | TC: #CC772F | BG: #F8ECDF
+Yellow | TC: #C29243 | BG: #FAF3DD
+Green | TC: #548064 | BG: #EEF3ED
+Blue | TC: #477DA5 | BG: #E9F3F7
+Purple | TC: #A48BBE | BG: #F6F3F8
+Pink | TC: #B35588 | BG: #F9F2F5
+Red | TC: #C4554D | BG: #FAECEC

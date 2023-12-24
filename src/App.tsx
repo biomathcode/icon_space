@@ -80,32 +80,4 @@ function App() {
   );
 }
 
-// function Tags({ tags }: { tags: any }) {
-//   return (
-//     <div
-//       className="row gap-2"
-//       style={{
-//         maxWidth: "100px",
-//         overflow: "auto",
-//         gap: "10px",
-
-//         justifyContent: "flex-start",
-//       }}
-//     >
-//       {tags.map((tag: any) => (
-//         <div
-//           style={{
-//             fontSize: "10px",
-//             fontWeight: "bold",
-
-//             borderRadius: "4px",
-//           }}
-//         >
-//           {tag + "  "}
-//         </div>
-//       ))}
-//     </div>
-//   );
-// }
-
 export default App;

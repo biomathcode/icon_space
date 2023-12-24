@@ -1,6 +1,6 @@
 import HeaderArea from "../header";
 import BottomBar from "../bottombar";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import GridContainer from "../grid";
 import useSidebarStore from "../../store/useSidebarStore";
@@ -8,8 +8,6 @@ import useAppStore from "../../store";
 
 function Main() {
   const { icons: data, folderSelected, setIcons } = useAppStore();
-
-  const [selectedId, setSelectedId] = useState("");
 
   useEffect(() => {
     setIcons();

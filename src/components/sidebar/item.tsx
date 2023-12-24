@@ -16,7 +16,8 @@ function FolderItem({ id, name }: { id: number; name: string }) {
           gap: "10px",
           fontSize: "14px",
           alignItems: "center",
-          border: id === folderSelected ? "2px solid blue" : "none",
+          border: id === folderSelected ? "2px solid #275DAD" : "none",
+          background: id === folderSelected ? " #275DAD" : "#0f0f0f98",
         }}
       >
         <span>{name == "home" ? "🏡" : "🖼️"}</span>
