@@ -7,9 +7,13 @@ import useSidebarStore from "../../store/useSidebarStore";
 import useAppStore from "../../store";
 
 function Main() {
-  const { icons: data } = useAppStore();
+  const { icons: data, folderSelected, setIcons } = useAppStore();
 
   const [selectedId, setSelectedId] = useState("");
+
+  useEffect(() => {
+    setIcons();
+  }, [folderSelected]);
 
   const { isOpen } = useSidebarStore();
   return (

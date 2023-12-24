@@ -138,16 +138,59 @@ export const addDummyData = async () => {
   }
 };
 
-export const getAllIcons = async () => {
+export const getAllIcons = async (folder_id: number) => {
   try {
     const db = await getDatabase();
 
-    return await db.select(`
-          SELECT id, name, svg, indx FROM icons 
-          ORDER BY indx ASC;
-        `);
+    return await db.select(
+      `
+    SELECT icons.id, icons.name, icons.svg, icons.indx
+    FROM icons
+    JOIN folderIcons ON icons.id = folderIcons.icon_id
+    WHERE folderIcons.folder_id = $1
+    ORDER BY icons.indx ASC;
+        `,
+      [folder_id]
+    );
   } catch (error) {
     console.error("Error fetching icons:", error);
+    throw error; // Re-throw the error to be handled elsewhere if necessary
+  }
+};
+
+export const linkIconToFolder = async (folderId: number, iconId: number) => {
+  try {
+    const db = await getDatabase();
+
+    // Insert relationships into the 'folderIcons' table
+    await db.execute(
+      "INSERT INTO folderIcons (folder_id, icon_id) VALUES ($1, $2);",
+      [folderId, iconId]
+    );
+
+    console.log(`Linked all icons to folder with ID ${folderId}.`);
+  } catch (error) {
+    console.error(`Error linking icons to folder with ID ${folderId}:`, error);
+    throw error; // Re-throw the error to be handled elsewhere if necessary
+  }
+};
+
+export const getAllIconsByFolderId = async (folderId: number) => {
+  try {
+    const db = await getDatabase();
+
+    return await db.select(
+      `
+      SELECT icons.id, icons.name, icons.svg, icons.indx
+      FROM icons
+      JOIN folderIcons ON icons.id = folderIcons.icon_id
+      WHERE folderIcons.folder_id = ?
+      ORDER BY icons.indx ASC;
+    `,
+      [folderId]
+    );
+  } catch (error) {
+    console.error(`Error fetching icons for folder ID ${folderId}:`, error);
     throw error; // Re-throw the error to be handled elsewhere if necessary
   }
 };
@@ -168,15 +211,13 @@ export const getAllFolders = async () => {
 export const insertIcon = async (name: string, svg: string, indx: number) => {
   const db = await getDatabase();
 
-  await db.execute(
+  return await db.execute(
     `
   INSERT INTO icons (name, svg, indx) VALUES ($1, $2, $3)
 
   `,
     [name, svg, indx]
   );
-
-  return await db.select(`SELECT id, name, svg, indx FROM icons `);
 };
 
 export const insertFolder = async (name: string) => {
@@ -364,6 +405,56 @@ export const updateIconSvgById = async (
     console.log(`Icon with id ${id} renamed to ${svg} successfully.`);
   } catch (error) {
     console.error(`Error renaming icon with id ${id}:`, error);
+    throw error;
+  }
+};
+
+export const updateIcon = async (
+  id: number,
+  { newName, svg }: { newName?: string; svg?: string }
+): Promise<void> => {
+  const db = await getDatabase();
+
+  try {
+    let updateValues: any = {};
+    let updateColumns = [];
+
+    if (newName !== undefined) {
+      updateValues.name = newName;
+      updateColumns.push("name");
+    }
+
+    if (svg !== undefined) {
+      updateValues.svg = svg;
+      updateColumns.push("svg");
+    }
+
+    if (updateColumns.length === 0) {
+      // No valid updates provided
+      console.log("No valid updates provided.");
+      return;
+    }
+
+    const updateColumnsString = updateColumns.join(", ");
+
+    await db.execute(
+      `
+      UPDATE icons
+      SET ${updateColumnsString} = ?
+      WHERE id = ?
+    `,
+      [updateValues, id]
+    );
+
+    console.log(`Icon with id ${id} updated successfully.`);
+
+    if (newName !== undefined) {
+      toast.success(`Updated Icon with name: ${newName}`);
+    } else {
+      toast.success("Updated Icon with SVG");
+    }
+  } catch (error) {
+    console.error(`Error updating icon with id ${id}:`, error);
     throw error;
   }
 };

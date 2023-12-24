@@ -11,6 +11,7 @@ import {
   swapIconIndexInDatabase,
   getAllIcons,
   getAllFolders,
+  linkIconToFolder,
 } from "../db"; // Import your actual database functions
 
 interface Icon {
@@ -18,6 +19,7 @@ interface Icon {
   name: string;
   svg: string;
   indx?: number; // index will depend on folder
+  folderId?: number;
 }
 
 interface Tag {
@@ -86,6 +88,7 @@ interface State extends FeatureFlags {
   addIconTagRelation: (iconId: number, tagId: number) => void;
   addFolderIconRelation: (folderId: number, iconId: number) => void;
   renameIcon: (RenameIcon: RenameIcon) => void;
+  removeIcon: (id: number) => void;
   removeTag: (tagId: number) => void;
   swapIcons: (indices: { index1: number; index2: number }) => Promise<void>;
 }
@@ -113,7 +116,7 @@ const useAppStore = create<State & FeatureFlags>((set, get) => ({
   },
 
   setIcons: async () => {
-    const getData = (await getAllIcons()) as Icon[];
+    const getData = (await getAllIcons(get().folderSelected)) as Icon[];
 
     set({
       icons: getData,
@@ -121,12 +124,21 @@ const useAppStore = create<State & FeatureFlags>((set, get) => ({
   },
 
   addIcon: async ({ name, svg, indx }) => {
-    const data = (await getAllIcons()) as Icon[];
-    await insertIcon(name, svg, data.length + 1);
+    const icons = get().icons as Icon[];
 
-    set((state) => ({
+    const icon = await insertIcon(name, svg, icons.length + 1);
+
+    console.log("insertIcons", icon.lastInsertId);
+
+    if (icon.lastInsertId) {
+      await linkIconToFolder(get().folderSelected, icon.lastInsertId);
+    }
+
+    const data = (await getAllIcons(get().folderSelected)) as Icon[];
+
+    set({
       icons: [...data],
-    }));
+    });
   },
 
   renameIcon: async ({ id, newName }) => {
