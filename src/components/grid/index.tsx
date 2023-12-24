@@ -20,21 +20,17 @@ import SortableItem from "./SortableItem";
 import Item from "./item";
 import toast from "react-hot-toast";
 import { writeText } from "@tauri-apps/api/clipboard";
-import { swapIconIndexInDatabase } from "../../db";
+import useAppStore from "../../store/useAppStore";
 
-const GridContainer = ({
-  items,
-
-  selectedId,
-  setSelectedId,
-}: {
-  items: any;
-
-  selectedId: any;
-  setSelectedId: any;
-  selFolder: any;
+const GridContainer = ({}: // selectedId,
+// setSelectedId,
+{
+  selectedId?: any;
+  setSelectedId?: any;
 }) => {
   // const [sort, setSort] = useState(false);
+
+  const { icons, setIcons, swapIcons } = useAppStore();
 
   const [activeId, setActiveId] = useState<string | null>(null);
   const sensors = useSensors(
@@ -50,21 +46,48 @@ const GridContainer = ({
     console.log("id", event.active.id);
     setActiveId(event.active.id as string);
   }, []);
-  const handleDragEnd = useCallback((event: DragEndEvent) => {
-    const { active, over } = event;
+  const handleDragEnd = useCallback(
+    async (event: DragEndEvent) => {
+      const { active, over } = event;
 
-    if (active?.id !== over?.id) {
-      console.log("items", items);
-      const oldIndex = items.findIndex((item: any) => item.id === active?.id);
-      const newIndex = items.findIndex((item: any) => item.id === over?.id);
+      if (active?.id !== over?.id) {
+        console.log("icons", icons);
+        const oldIndex = icons.find(
+          (item: any) => item.id === Number(active?.id)
+        );
+        const newIndex = icons.find(
+          (item: any) => item.id === Number(over?.id)
+        );
 
-      // setItems((items: any) => {
-      //   return arrayMove(items, oldIndex, newIndex);
-      // });
-    }
+        console.log(oldIndex, newIndex);
 
-    setActiveId(null);
-  }, []);
+        console.log(
+          "activeId",
+          active.id,
+          "overId",
+          over?.id,
+          "oldIndex",
+          oldIndex,
+          "newIndex",
+          newIndex
+        );
+
+        await swapIcons({
+          index1: Number(oldIndex?.indx),
+          index2: Number(newIndex?.indx),
+        });
+
+        setIcons();
+
+        // seticons((icons: any) => {
+        //   return arrayMove(icons, oldIndex, newIndex);
+        // });
+      }
+
+      setActiveId(null);
+    },
+    [icons]
+  );
   const handleDragCancel = useCallback(() => {
     setActiveId(null);
   }, []);
@@ -83,8 +106,6 @@ const GridContainer = ({
     }
   };
 
-  console.log("grid container item", items);
-
   return (
     <DndContext
       sensors={sensors}
@@ -94,15 +115,15 @@ const GridContainer = ({
       onDragCancel={handleDragCancel}
       autoScroll={{ threshold: { x: 0, y: 0.2 } }}
     >
-      <SortableContext items={items} strategy={rectSortingStrategy}>
-        <Grid columns={5}>
-          {items.map((item: any) => (
+      <SortableContext items={icons} strategy={rectSortingStrategy}>
+        <Grid columns={10}>
+          {icons.map((item: any) => (
             <SortableItem
               onClick={async () => {
-                setSelectedId(selectedId !== item.id ? item.id : "");
-                await copyToClipboard(item.svg);
+                // setSelectedId(selectedId !== item.id ? item.id : "");
+                // await copyToClipboard(item.svg);
               }}
-              key={item.id}
+              key={item.indx}
               id={item.id}
               name={item.name}
               svg={item.svg}
@@ -113,8 +134,8 @@ const GridContainer = ({
       <DragOverlay adjustScale style={{ transformOrigin: "0 0 " }}>
         {activeId ? (
           <Item
-            name={items.find((e: any) => e.id === activeId).name}
-            svg={items.find((e: any) => e.id === activeId).svg}
+            name={icons?.find((e: any) => e.id === activeId)?.name}
+            svg={icons?.find((e: any) => e.id === activeId)?.svg}
             id={activeId}
             isDragging
           />

@@ -10,6 +10,7 @@ import {
   deleteTagById,
   swapIconIndexInDatabase,
   getAllIcons,
+  getAllFolders,
 } from "../db"; // Import your actual database functions
 
 interface Icon {
@@ -38,6 +39,10 @@ interface IconTag {
 interface FolderIcon {
   folder_id: number;
   icon_id: number;
+}
+
+interface FolderSelected {
+  folder_id: number;
 }
 
 interface FeatureFlags {
@@ -69,16 +74,18 @@ interface State extends FeatureFlags {
   folderIcons: FolderIcon[];
   iconVersions: IconVersion[];
   setIcons: () => void;
+  setFolders: () => void;
   addIcon: (icon: Icon) => void;
   addTag: (tag: Tag) => void;
-  addFolder: (folder: Folder) => void;
+  addFolder: (folder: { name: string }) => void;
   addIconTagRelation: (iconId: number, tagId: number) => void;
   addFolderIconRelation: (folderId: number, iconId: number) => void;
   renameIcon: (RenameIcon: RenameIcon) => void;
   removeTag: (tagId: number) => void;
+  swapIcons: (indices: { index1: number; index2: number }) => Promise<void>;
 }
 
-const useAppStore = create<State & FeatureFlags>((set) => ({
+const useAppStore = create<State & FeatureFlags>((set, get) => ({
   enableNewIconFeature: true,
   enableNewTagFeature: true,
   icons: [],
@@ -87,13 +94,17 @@ const useAppStore = create<State & FeatureFlags>((set) => ({
   iconTags: [],
   folderIcons: [],
   iconVersions: [], // get the icon and get the first version
+  setFolders: async () => {
+    const getFolders = (await getAllFolders()) as Folder[];
+    set({ folders: getFolders });
+  },
 
   setIcons: async () => {
     const getData = (await getAllIcons()) as Icon[];
 
-    set((state) => ({
+    set({
       icons: getData,
-    }));
+    });
   },
 
   addIcon: async ({ name, svg, indx }) => {
@@ -130,9 +141,10 @@ const useAppStore = create<State & FeatureFlags>((set) => ({
     await deleteTagById(tagId);
     set((state) => ({ tags: state.tags.filter((tag) => tag.id !== tagId) }));
   },
-  addFolder: async (folder: Folder) => {
-    await insertFolder(folder.name);
-    set((state) => ({ folders: [...state.folders, folder] }));
+  addFolder: async ({ name }: { name: string }) => {
+    await insertFolder(name);
+
+    get().setFolders();
   },
   renameFolder: async ({ id, name }: Folder) => {
     try {
@@ -184,9 +196,23 @@ const useAppStore = create<State & FeatureFlags>((set) => ({
         // Find icons with the specified indices
         const icon1 = state.icons.find((icon) => icon.indx === index1);
         const icon2 = state.icons.find((icon) => icon.indx === index2);
+        console.log(
+          "outside closure icon1",
+          icon1?.id,
+          icon2?.id,
+          index1,
+          index2
+        );
 
         // If both icons are found, update their indices
         if (icon1?.id && icon2?.id) {
+          console.log(
+            "inside closure icon1",
+            icon1.id,
+            icon2.id,
+            index1,
+            index2
+          );
           swapIconIndexInDatabase(icon1.id, icon2.id, index1, index2);
 
           const updatedIcons = state.icons.map((icon) => {

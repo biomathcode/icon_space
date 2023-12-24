@@ -1,1 +1,3 @@
-export { useDatabaseStore } from "./useDatabaseStore";
+import useAppStore from "./useAppStore";
+
+export default useAppStore;

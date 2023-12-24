@@ -1,10 +1,6 @@
 
 - [ ] svg to jsx
 
-### Create a good API with database;
-
-Take Copy 
-
 ### Good UI Elements To have
 - [X] Create a table/ Grid view with react-table 
 - [X] Add Support for indexing
@@ -20,6 +16,7 @@ Take Copy
 - [X] Svg code viewer;
 - [X] Setup database
 - [X] Download as svg, png
+- [ ] Create Responsive grid : https://travishorn.com/responsive-grid-in-2-minutes-with-css-grid-layout-4842a41420fe
 
 
 
@@ -33,7 +30,7 @@ Take Copy
 - [ ] CloseAble Info
 - [ ] Add Notification System
 - [ ] Create a Size slider
-
+- [ ] useMediaQuery to update the Grid Column
 
 - [ ] Add Svg version history 
 - [ ] Implement folder drag and drop
@@ -45,10 +42,6 @@ Take Copy
 - [ ] Build timeline for the svg animate
 - [ ] Svg Canvas Editor
 - [ ] 
-
-
-Aim : 
-I want to people to create icons packs, 
 
 
 ### Resources: 

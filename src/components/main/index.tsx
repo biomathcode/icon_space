@@ -4,36 +4,12 @@ import { useEffect, useState } from "react";
 
 import GridContainer from "../grid";
 import useSidebarStore from "../../store/useSidebarStore";
+import useAppStore from "../../store";
 
-function Main({
-  data,
-
-  selFolder,
-}: {
-  data: any;
-
-  selFolder: any;
-}) {
-  // const DeleteIcon = async (id: number) => {
-  //   try {
-  //     console.log("icon id", id);
-  //     await deleteIconById(Number(id));
-
-  //     const filteredMap = data.filter((e: any) => e.id !== id);
-
-  //     console.log("this is the filterdMap", filteredMap);
-
-  //     toast.success("Icon Deleted");
-
-  //     setData(filteredMap);
-  //   } catch (e) {
-  //     console.error("Error Deleting element:", e);
-  //   }
-  // };
+function Main() {
+  const { icons: data } = useAppStore();
 
   const [selectedId, setSelectedId] = useState("");
-
-  useEffect(() => {}, [data]);
 
   const { isOpen } = useSidebarStore();
   return (
@@ -47,12 +23,7 @@ function Main({
     >
       <HeaderArea data={data} />
 
-      <GridContainer
-        items={data}
-        selectedId={selectedId}
-        setSelectedId={setSelectedId}
-        selFolder={selFolder}
-      />
+      <GridContainer selectedId={selectedId} setSelectedId={setSelectedId} />
 
       {/* <TableView /> */}
 

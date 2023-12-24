@@ -1,4 +1,5 @@
 import { forwardRef, HTMLAttributes, CSSProperties } from "react";
+import { deleteIconById } from "../../db";
 
 export type ItemProps = HTMLAttributes<HTMLDivElement> & {
   id: string;
@@ -13,8 +14,8 @@ const Item = forwardRef<HTMLDivElement, ItemProps>(
     const inlineStyles: CSSProperties = {
       opacity: withOpacity ? "0.5" : "1",
       transformOrigin: "50% 50%",
-      height: "140px",
-      width: "140px",
+      height: "100px",
+      width: "100px",
       borderRadius: "10px",
       cursor: isDragging ? "grabbing" : "grab",
       backgroundColor: "#222",
@@ -33,18 +34,20 @@ const Item = forwardRef<HTMLDivElement, ItemProps>(
     };
 
     return (
-      <div ref={ref} style={inlineStyles} {...props}>
-        <div>
-          <img
-            style={{
-              width: "40px",
-              height: "40px",
-            }}
-            src={`data:image/svg+xml;utf8,${encodeURIComponent(svg || "")}`}
-          />
-          <div>{name}</div>
+      <>
+        <div ref={ref} style={inlineStyles} {...props}>
+          <div>
+            <img
+              style={{
+                width: "50px",
+                height: "50px",
+              }}
+              src={`data:image/svg+xml;utf8,${encodeURIComponent(svg || "")}`}
+            />
+            <div>{name}</div>
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 );

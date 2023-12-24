@@ -1,39 +1,13 @@
-import { useEffect, useState } from "react";
 import Logo from "../../assets/logo.svg";
-import { getAllFolders } from "../../db";
-import Dialog from "../dialog";
+
 import useSidebarStore from "../../store/useSidebarStore";
 
-function Sidebar({
-  selFolder,
-  setSelFolder,
-}: {
-  selFolder: any;
-  setSelFolder: any;
-}) {
-  const [folders, setFolders] = useState<any>([
-    {
-      id: 1,
-      name: "home",
-    },
-    {
-      id: 2,
-      name: "illustrations",
-    },
-  ]);
+import FolderItem from "./item";
+import useAppStore from "../../store";
+import Dialog from "../dialog";
 
-  useEffect(() => {
-    const init = async () => {
-      console.log("Database initialized.");
-
-      console.log("Fetching data...");
-      const data = await getAllFolders();
-
-      setFolders(data);
-      console.log("Data fetched:", data);
-    };
-    init();
-  }, []);
+function Sidebar() {
+  const { folders } = useAppStore();
 
   const { isOpen } = useSidebarStore();
   return (
@@ -84,28 +58,12 @@ function Sidebar({
           gap: "10px",
         }}
       >
-        {folders.map((e: any) => {
-          return (
-            <button
-              style={{
-                display: "flex",
-                gap: "10px",
-                fontSize: "14px",
-                alignItems: "center",
-                background: e.id == selFolder ? "#275DAD" : "#111",
-              }}
-              key={e.id}
-              onClick={() => {
-                setSelFolder(e.id);
-              }}
-            >
-              <span>{e.name == "home" ? "🏡" : "🖼️"}</span>
-              <span>{e.name}</span>
-            </button>
-          );
-        })}
+        {folders &&
+          folders?.map((e: { name: string; id: number }) => (
+            <FolderItem key={e.id} id={e.id} name={e.name} />
+          ))}
 
-        <Dialog setFolder={setFolders} />
+        <Dialog />
       </nav>
     </div>
   );

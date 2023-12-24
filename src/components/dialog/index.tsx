@@ -1,10 +1,12 @@
 import * as Ariakit from "@ariakit/react";
 import { useState } from "react";
 import { insertFolder } from "../../db";
+import useAppStore from "../../store";
 
-export default function Dialog({ setFolder }: { setFolder: any }) {
+export default function Dialog() {
   const dialog = Ariakit.useDialogStore({ animated: true });
   const [name, setName] = useState<string>("");
+  const { addFolder } = useAppStore();
   return (
     <>
       <Ariakit.Button onClick={dialog.show} className="button">
@@ -33,9 +35,8 @@ export default function Dialog({ setFolder }: { setFolder: any }) {
           <Ariakit.DialogDismiss
             as="button"
             onClick={async () => {
-              const newfolder = await insertFolder(name);
-
-              setFolder(newfolder);
+              // const newfolder = await insertFolder(name);
+              addFolder({ name });
             }}
             className="button"
           >
