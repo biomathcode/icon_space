@@ -26,6 +26,9 @@ function Main() {
       <HeaderArea data={data} />
 
       <GridContainer />
+      {/* <VersionControl /> */}
+
+      {/* <SvgContainer /> */}
 
       {/* <TableView /> */}
 

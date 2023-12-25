@@ -104,6 +104,15 @@ const useAppStore = create<State & FeatureFlags>((set, get) => ({
   iconVersions: [], // get the icon and get the first version
   folderSelected: 1,
   iconSelected: 1,
+  setIconVersions: () => {
+    // TODO: get data from database and seticons
+  },
+  addIconVersion: () => {
+    // TODO: addbranch to the iconversion
+  },
+  removeIconVersion: () => {
+    // TODO: removeicon from the iconversion
+  },
   setFolderSelected: (folder_id) => {
     set({ folderSelected: folder_id });
   },

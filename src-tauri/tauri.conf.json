@@ -60,6 +60,7 @@
         "all": true
       }
     },
+    "macOSPrivateApi": true,
     "bundle": {
       "active": true,
       "targets": "all",
@@ -81,7 +82,10 @@
         "resizable": true,
         "title": "Icon Space",
         "width": 800,
-        "height": 600
+        "height": 600,
+        "titleBarStyle": "Visible",
+
+        "transparent": true
       }
     ]
   }

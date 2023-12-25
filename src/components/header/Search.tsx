@@ -34,7 +34,7 @@ function Search({ data, setData }: { data: any; setData: any }) {
       <input
         type="text"
         onBlur={async () => {
-          const data = await getAllIcons();
+          const data = await getAllIcons(1);
 
           setData(data);
         }}

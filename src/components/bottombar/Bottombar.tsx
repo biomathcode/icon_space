@@ -161,7 +161,7 @@ function BottomBar() {
                 Save
               </button>
             </div>
-            <div className="flex gap-10">
+            <div className="  fx mt-10 gap-10">
               {colors &&
                 colors?.map((e: string) => (
                   <div

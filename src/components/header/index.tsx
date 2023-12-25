@@ -56,7 +56,7 @@ function HeaderArea({ data }: { data: any }) {
           </svg>
         )}
       </button>
-      {/* <Search data={data} setData={setData} /> */}
+
       <SubMenu />
     </section>
   );

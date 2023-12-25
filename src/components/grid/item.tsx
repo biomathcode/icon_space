@@ -1,5 +1,6 @@
 import { forwardRef, HTMLAttributes, CSSProperties } from "react";
 import { deleteIconById } from "../../db";
+import { Text } from "@adobe/react-spectrum";
 
 export type ItemProps = HTMLAttributes<HTMLDivElement> & {
   id: string;
@@ -18,7 +19,7 @@ const Item = forwardRef<HTMLDivElement, ItemProps>(
       width: "100px",
       borderRadius: "10px",
       cursor: isDragging ? "grabbing" : "grab",
-      backgroundColor: "#222",
+      backgroundColor: "rgba(24, 24, 24, 0.6)",
       color: "#eee",
       display: "flex",
       justifyContent: "center",
@@ -36,7 +37,7 @@ const Item = forwardRef<HTMLDivElement, ItemProps>(
     return (
       <>
         <div ref={ref} style={inlineStyles} {...props}>
-          <div>
+          <div className="fx col center">
             <img
               style={{
                 width: "50px",
@@ -44,7 +45,7 @@ const Item = forwardRef<HTMLDivElement, ItemProps>(
               }}
               src={`data:image/svg+xml;utf8,${encodeURIComponent(svg || "")}`}
             />
-            <div>{name}</div>
+            <Text>{name}</Text>
           </div>
         </div>
       </>

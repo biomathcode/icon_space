@@ -2,36 +2,48 @@ import { useEffect } from "react";
 import { readTextFile } from "@tauri-apps/api/fs";
 import "./App.css";
 import { listen } from "@tauri-apps/api/event";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { handleInitializeDatabase } from "./db";
 import Sidebar from "./components/sidebar";
 import Main from "./components/main";
 import useAppStore from "./store/useAppStore";
 import { DndContext } from "@dnd-kit/core";
 
+function isSvgFile(filePath: string) {
+  return /\.svg$/i.test(filePath);
+}
+
 function App() {
   const { icons, setIcons, addIcon, setFolders } = useAppStore();
 
   useEffect(() => {
-    listen("tauri://file-drop", (event: any) => {
+    listen("tauri://file-drop", async (event: any) => {
       console.log(event);
 
-      const file = event.payload[0].split("/").pop();
+      for (let i = 0; i < event.payload.length; i++) {
+        const filePath = event.payload[i];
 
-      const fileName = file.replace(".svg", "") || "new File";
+        if (!isSvgFile(filePath)) {
+          return toast.error("File is not svg", filePath);
+        } else {
+          const name = filePath.split("/").pop();
+          const fileName = name?.replace(".svg", "") || "new File";
 
-      console.log("filename", fileName);
+          try {
+            const svgContent = await readTextFile(filePath);
 
-      readTextFile(event.payload[0])
-        .then((e) => {
-          let newIcon = {
-            name: fileName,
-            svg: e,
-          };
+            let newIcon = {
+              name: fileName,
+              svg: svgContent,
+            };
 
-          addIcon(newIcon);
-        })
-        .catch((e) => console.log("error", e));
+            addIcon(newIcon);
+          } catch (error) {
+            console.error(`Error processing file ${filePath}: ${error}`);
+            // Continue with the next file even if an error occurs
+          }
+        }
+      }
     });
   }, []);
 
