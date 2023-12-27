@@ -1,14 +1,17 @@
 import HeaderArea from "../header";
 import BottomBar from "../bottombar";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import useSidebarStore from "../../store/useSidebarStore";
 import useAppStore from "../../store";
 
 import TableContainer from "../tableView";
-
+import { ToggleButton } from "@adobe/react-spectrum";
+import GridContainer from "../grid";
 function Main() {
   const { folderSelected, setIcons } = useAppStore();
+
+  const [isGrid, setIsGrid] = useState<boolean>(true);
 
   useEffect(() => {
     setIcons();
@@ -26,9 +29,18 @@ function Main() {
     >
       <HeaderArea />
 
-      {/* <GridContainer /> */}
+      <ToggleButton
+        isEmphasized
+        isSelected={isGrid}
+        onChange={setIsGrid}
+        aria-label="Pin"
+      >
+        {isGrid ? "Grid" : "Table"}
+      </ToggleButton>
 
-      <TableContainer />
+      {isGrid ? <GridContainer /> : <TableContainer />}
+
+      {/* <GridContainer /> */}
 
       {/* <VersionControl /> */}
 

@@ -16,6 +16,11 @@
 - [X] Svg code viewer;
 - [X] Setup database
 - [X] Download as svg, png
+- [X] Truncate Text
+- [X] Fix Sort  
+- [X] Icons drag and drop to folders
+- [X] Folder selection state 
+- [X] Folder selected will be in persistent state
 - [ ] Create Responsive grid : https://travishorn.com/responsive-grid-in-2-minutes-with-css-grid-layout-4842a41420fe
 
 
@@ -23,6 +28,7 @@
 - [ ] Update copy as with svelte, vue, jxs, svg,png,
 - [ ] Input Elements
 - [ ] We can use react-table pin row option to create a group export option
+- [ ] Support for zip download : https://medium.com/@florian.bloechinger/creating-zip-files-in-rust-made-easy-with-the-zip-library-cff572906678
 
 ### Info Element
 - [ ] Shortcut Buttons
@@ -34,15 +40,12 @@
 
 - [ ] Add Svg version history 
 - [ ] Implement folder drag and drop
-- [ ] Icons drag and drop to folders
-- [ ] Folder selection state 
-- [ ] Folder selected will be in persistent state
+
 - [ ] Add React flow 
 - [ ] Building an svg animate state
 - [ ] Build timeline for the svg animate
 - [ ] Svg Canvas Editor
-- [X] Truncate Text
-- [ ] Fix Sort  
+
 
 
 ### Resources: 

@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { readTextFile } from "@tauri-apps/api/fs";
 import "./App.css";
+
 import { listen } from "@tauri-apps/api/event";
 import toast, { Toaster } from "react-hot-toast";
 import { handleInitializeDatabase } from "./db";
@@ -14,10 +15,10 @@ function isSvgFile(filePath: string) {
 }
 
 function App() {
-  const { icons, setIcons, addIcon, setFolders } = useAppStore();
+  const { setIcons, addIcon, setFolders } = useAppStore();
 
   useEffect(() => {
-    listen("tauri://file-drop", async (event: any) => {
+    const listern = listen("tauri://file-drop", async (event: any) => {
       console.log(event);
 
       for (let i = 0; i < event.payload.length; i++) {
@@ -45,30 +46,20 @@ function App() {
         }
       }
     });
+    return () => {
+      listern.then((e) => {
+        console.log("closed");
+      });
+    };
   }, []);
 
   useEffect(() => {
     const init = async () => {
-      console.log("Initializing database...");
-
       await handleInitializeDatabase();
-
-      console.log("Database initialized.");
-
-      console.log("Fetching data...");
       setIcons();
-
-      console.log("Data fetched:", icons);
+      setFolders();
     };
     init();
-
-    setFolders();
-  }, []);
-
-  useEffect(() => {
-    if (icons) {
-      console.log(icons[0]);
-    }
   }, []);
 
   return (

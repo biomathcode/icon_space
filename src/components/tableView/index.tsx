@@ -12,6 +12,7 @@ import {
 
 import useAppStore from "../../store";
 import { useState } from "react";
+import MoveTo from "./Moveto";
 
 function TableContainer() {
   const { icons } = useAppStore();
@@ -36,6 +37,7 @@ function TableContainer() {
           <ActionButton onPress={handleExport} alignSelf="start">
             Export
           </ActionButton>
+          <MoveTo />
         </Flex>
 
         <TableView
