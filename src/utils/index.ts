@@ -87,6 +87,13 @@ const copyToClipboard = async (text: string) => {
   }
 };
 
+function truncateText(text: string, maxLength: number) {
+  if (text.length > maxLength) {
+    return text.slice(0, maxLength) + "...";
+  }
+  return text;
+}
+
 export {
   downloadData,
   downloadPNG,
@@ -94,4 +101,5 @@ export {
   copyDataUrl,
   copySVG,
   copyToClipboard,
+  truncateText,
 };

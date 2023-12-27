@@ -9,6 +9,12 @@ import { save } from "@tauri-apps/api/dialog";
 import useSidebarStore from "../../store/useSidebarStore";
 import { copyToClipboard, optmiseSvg } from "../../utils";
 import useAppStore from "../../store";
+import {
+  Button,
+  ButtonGroup,
+  DialogContainer,
+  useDialogContainer,
+} from "@adobe/react-spectrum";
 
 function BottomBar() {
   const [data, setData] = useState<any>({
@@ -59,50 +65,13 @@ function BottomBar() {
     }
   };
 
-  const { isOpen } = useSidebarStore();
-
   return (
-    <div
-      style={{
-        position: "absolute",
-        width: "100%",
-        height: "100%",
-        pointerEvents: "none",
-        zIndex: "999999999",
-      }}
+    <DialogContainer
+      isDismissable
+      isKeyboardDismissDisabled={false}
+      onDismiss={() => setIconSelected(0)}
     >
-      <div
-        style={{
-          position: "absolute",
-          left: isOpen ? "0px" : "0px",
-          bottom: iconSelected !== 0 ? "300px" : "00px",
-          height: "240px",
-          pointerEvents: "all",
-
-          width: "100%",
-          background: "#222",
-          transition: "all ease 216ms",
-          // display: iconSelected !== 0 ? "block" : "none",
-          overflow: "hidden",
-        }}
-      >
-        <div
-          style={{
-            position: "absolute",
-            top: "0px",
-            right: "20px",
-            width: "25px",
-            height: "25px",
-            background: "#222",
-            color: "#fff",
-            cursor: "pointer",
-            border: "1px solid #eee",
-            borderRadius: "99px",
-          }}
-          onClick={() => setIconSelected(0)}
-        >
-          X
-        </div>
+      {iconSelected !== 0 && (
         <div
           style={{
             display: "flex",
@@ -112,9 +81,10 @@ function BottomBar() {
         >
           <CodeEditor svg={data && data[0]?.svg} />
           <div className="flex  gap-10">
-            <div className="flex flex-start">
-              <button
-                onClick={async () => {
+            <ButtonGroup>
+              <Button
+                variant="primary"
+                onPress={async () => {
                   const el = optmiseSvg(data && data[0]?.svg);
 
                   await updateIconSvgById(data[0].id, el);
@@ -123,25 +93,28 @@ function BottomBar() {
                 }}
               >
                 optimise
-              </button>
-              <button
-                onClick={async () => {
+              </Button>
+              <Button
+                variant="negative"
+                onPress={async () => {
                   removeIcon(data[0].id);
                   setIconSelected(0);
                 }}
               >
                 delete
-              </button>
-              <button
-                onClick={async () => {
+              </Button>
+              <Button
+                variant="overBackground"
+                onPress={async () => {
                   await copyToClipboard(data[0].svg);
                 }}
               >
                 Copy to clipboard
-              </button>
+              </Button>
 
-              <button
-                onClick={async () => {
+              <Button
+                variant="cta"
+                onPress={async () => {
                   const filepath = await save({
                     defaultPath: data[0].name,
                     filters: [
@@ -159,8 +132,8 @@ function BottomBar() {
                 }}
               >
                 Save
-              </button>
-            </div>
+              </Button>
+            </ButtonGroup>
             <div className="  fx mt-10 gap-10">
               {colors &&
                 colors?.map((e: string) => (
@@ -180,8 +153,8 @@ function BottomBar() {
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      )}
+    </DialogContainer>
   );
 }
 

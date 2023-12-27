@@ -20,7 +20,8 @@ import SortableItem from "./SortableItem";
 import Item from "./item";
 import toast from "react-hot-toast";
 import { writeText } from "@tauri-apps/api/clipboard";
-import useAppStore from "../../store/useAppStore";
+import useAppStore, { Icon } from "../../store/useAppStore";
+import { updateIconById } from "../../db";
 
 // we have support for input
 // number
@@ -82,7 +83,7 @@ const GridContainer = () => {
     async (event: DragEndEvent) => {
       const { active, over } = event;
 
-      if (active?.id !== over?.id) {
+      if (over && active?.id !== over?.id) {
         console.log("icons", icons);
         const oldIndex = icons.find(
           (item: any) => item.id === Number(active?.id)
@@ -91,29 +92,20 @@ const GridContainer = () => {
           (item: any) => item.id === Number(over?.id)
         );
 
-        console.log(oldIndex, newIndex);
+        const activeIndex = icons.findIndex(({ id }) => id === active.id);
+        const overIndex = icons.findIndex(({ id }) => id === over?.id);
 
-        console.log(
-          "activeId",
-          active.id,
-          "overId",
-          over?.id,
-          "oldIndex",
-          oldIndex,
-          "newIndex",
-          newIndex
-        );
+        const newItems = arrayMove(icons, activeIndex, overIndex).map(
+          (e, i) => ({ ...e, indx: i + 1 })
+        ) as Icon[];
 
-        await swapIcons({
-          index1: Number(oldIndex?.indx),
-          index2: Number(newIndex?.indx),
-        });
+        for (let icn of newItems) {
+          updateIconById(Number(icn.id), {
+            indx: icn.indx,
+          });
+        }
 
-        setIcons();
-
-        // seticons((icons: any) => {
-        //   return arrayMove(icons, oldIndex, newIndex);
-        // });
+        setIcons(newItems);
       }
 
       setActiveId(null);
@@ -126,8 +118,6 @@ const GridContainer = () => {
 
   return (
     <>
-      <div className="flex gap-10"></div>
-
       <DndContext
         sensors={sensors}
         collisionDetection={closestCenter}

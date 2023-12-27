@@ -1,3 +1,4 @@
+import { Flex } from "@adobe/react-spectrum";
 import { FC, ReactNode } from "react";
 
 type GridProps = {
@@ -7,18 +8,18 @@ type GridProps = {
 
 const Grid: FC<GridProps> = ({ children, columns }) => {
   return (
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: `repeat(${columns}, 1fr)`,
-        gridGap: 10,
-        width: "100%",
-
-        margin: "100px auto",
+    <Flex
+      direction="row"
+      gap="size-100"
+      UNSAFE_style={{
+        marginTop: "100px",
+        minHeight: "600px",
+        height: "calc(100vh - 100px)",
       }}
+      wrap
     >
       {children}
-    </div>
+    </Flex>
   );
 };
 

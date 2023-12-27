@@ -12,9 +12,10 @@ import {
   getAllIcons,
   getAllFolders,
   linkIconToFolder,
+  updateIconById,
 } from "../db"; // Import your actual database functions
 
-interface Icon {
+export interface Icon {
   id?: number;
   name: string;
   svg: string;
@@ -22,43 +23,43 @@ interface Icon {
   folderId?: number;
 }
 
-interface Tag {
+export interface Tag {
   id: number;
   name: string;
   color: string;
 }
 
-interface Folder {
+export interface Folder {
   id: number;
   name: string;
 }
 
-interface IconTag {
+export interface IconTag {
   icon_id: number;
   tag_id: number;
 }
 
-interface FolderIcon {
+export interface FolderIcon {
   folder_id: number;
   icon_id: number;
 }
 
-interface FolderSelected {
+export interface FolderSelected {
   folder_id: number;
 }
 
-interface FeatureFlags {
+export interface FeatureFlags {
   enableNewIconFeature: boolean;
   enableNewTagFeature: boolean;
   // Add more feature flags as needed
 }
 
-interface RenameIcon {
+export interface RenameIcon {
   id: number;
   newName: string;
 }
 
-interface IconVersion {
+export interface IconVersion {
   version_id: number;
   icon_id: number;
   parent_version_id?: number | null; // Nullable to represent the root
@@ -68,7 +69,7 @@ interface IconVersion {
   created_at: string;
 }
 
-interface State extends FeatureFlags {
+export interface State extends FeatureFlags {
   icons: Icon[];
   tags: Tag[];
   folders: Folder[];
@@ -80,7 +81,7 @@ interface State extends FeatureFlags {
 
   folderSelected: number;
   setFolderSelected: (folder_id: number) => void;
-  setIcons: () => void;
+  setIcons: (icons?: Icon[]) => void;
   setFolders: () => void;
   addIcon: (icon: Icon) => void;
   addTag: (tag: Tag) => void;
@@ -103,7 +104,7 @@ const useAppStore = create<State & FeatureFlags>((set, get) => ({
   folderIcons: [],
   iconVersions: [], // get the icon and get the first version
   folderSelected: 1,
-  iconSelected: 1,
+  iconSelected: 0,
   setIconVersions: () => {
     // TODO: get data from database and seticons
   },
@@ -124,12 +125,18 @@ const useAppStore = create<State & FeatureFlags>((set, get) => ({
     set({ folders: getFolders });
   },
 
-  setIcons: async () => {
-    const getData = (await getAllIcons(get().folderSelected)) as Icon[];
+  setIcons: async (icons?: Icon[]) => {
+    if (icons) {
+      set({
+        icons: icons,
+      });
+    } else {
+      const getData = (await getAllIcons(get().folderSelected)) as Icon[];
 
-    set({
-      icons: getData,
-    });
+      set({
+        icons: getData,
+      });
+    }
   },
 
   addIcon: async ({ name, svg, indx }) => {
@@ -247,6 +254,7 @@ const useAppStore = create<State & FeatureFlags>((set, get) => ({
             index1,
             index2
           );
+
           swapIconIndexInDatabase(icon1.id, icon2.id, index1, index2);
 
           const updatedIcons = state.icons.map((icon) => {

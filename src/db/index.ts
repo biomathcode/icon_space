@@ -354,7 +354,7 @@ export const getIconById = async (id: number) => {
 
   return await db.select(
     `
-  SELECT id,name, svg FROM icons  
+  SELECT id,name, svg,indx FROM icons  
   WHERE id = $1
   `,
     [id]
@@ -409,9 +409,9 @@ export const updateIconSvgById = async (
   }
 };
 
-export const updateIcon = async (
+export const updateIconById = async (
   id: number,
-  { newName, svg }: { newName?: string; svg?: string }
+  { newName, svg, indx }: { newName?: string; svg?: string; indx?: number }
 ): Promise<void> => {
   const db = await getDatabase();
 
@@ -422,6 +422,11 @@ export const updateIcon = async (
     if (newName !== undefined) {
       updateValues.name = newName;
       updateColumns.push("name");
+    }
+
+    if (indx !== undefined) {
+      updateValues.indx = indx;
+      updateColumns.push("indx");
     }
 
     if (svg !== undefined) {
@@ -437,22 +442,22 @@ export const updateIcon = async (
 
     const updateColumnsString = updateColumns.join(", ");
 
-    await db.execute(
+    const response = await db.execute(
       `
       UPDATE icons
-      SET ${updateColumnsString} = ?
+      SET indx = ?
       WHERE id = ?
     `,
-      [updateValues, id]
+      [indx, id]
     );
 
     console.log(`Icon with id ${id} updated successfully.`);
 
-    if (newName !== undefined) {
-      toast.success(`Updated Icon with name: ${newName}`);
-    } else {
-      toast.success("Updated Icon with SVG");
-    }
+    // if (newName !== undefined) {
+    //   toast.success(`Updated Icon with name: ${response.rowsAffected}`);
+    // } else {
+    //   toast.success(`Updated Icon with SVG: ${response.lastInsertId}`);
+    // }
   } catch (error) {
     console.error(`Error updating icon with id ${id}:`, error);
     throw error;

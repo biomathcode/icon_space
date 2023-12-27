@@ -1,6 +1,7 @@
 import { forwardRef, HTMLAttributes, CSSProperties } from "react";
 import { deleteIconById } from "../../db";
 import { Text } from "@adobe/react-spectrum";
+import { truncateText } from "../../utils";
 
 export type ItemProps = HTMLAttributes<HTMLDivElement> & {
   id: string;
@@ -45,7 +46,7 @@ const Item = forwardRef<HTMLDivElement, ItemProps>(
               }}
               src={`data:image/svg+xml;utf8,${encodeURIComponent(svg || "")}`}
             />
-            <Text>{name}</Text>
+            <Text>{truncateText(name || "", 10)}</Text>
           </div>
         </div>
       </>

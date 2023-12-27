@@ -41,7 +41,8 @@
 - [ ] Building an svg animate state
 - [ ] Build timeline for the svg animate
 - [ ] Svg Canvas Editor
-- [ ] 
+- [X] Truncate Text
+- [ ] Fix Sort  
 
 
 ### Resources: 
