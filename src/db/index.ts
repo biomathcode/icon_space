@@ -440,9 +440,7 @@ export const updateIconById = async (
       return;
     }
 
-    const updateColumnsString = updateColumns.join(", ");
-
-    const response = await db.execute(
+    await db.execute(
       `
       UPDATE icons
       SET indx = ?

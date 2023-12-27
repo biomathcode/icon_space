@@ -6,7 +6,7 @@ type GridProps = {
   children: ReactNode;
 };
 
-const Grid: FC<GridProps> = ({ children, columns }) => {
+const Grid: FC<GridProps> = ({ children }) => {
   return (
     <Flex
       direction="row"

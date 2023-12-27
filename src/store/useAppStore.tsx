@@ -12,7 +12,6 @@ import {
   getAllIcons,
   getAllFolders,
   linkIconToFolder,
-  updateIconById,
 } from "../db"; // Import your actual database functions
 
 export interface Icon {
@@ -139,7 +138,7 @@ const useAppStore = create<State & FeatureFlags>((set, get) => ({
     }
   },
 
-  addIcon: async ({ name, svg, indx }) => {
+  addIcon: async ({ name, svg }) => {
     const icons = get().icons as Icon[];
 
     const icon = await insertIcon(name, svg, icons.length + 1);

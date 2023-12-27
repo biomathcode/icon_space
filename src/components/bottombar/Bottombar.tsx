@@ -2,19 +2,14 @@
 
 import { useEffect, useState } from "react";
 import CodeEditor from "../editor/index";
-import { deleteIconById, getIconById, updateIconSvgById } from "../../db";
-import { BaseDirectory, writeFile } from "@tauri-apps/api/fs";
+import { getIconById, updateIconSvgById } from "../../db";
+import { writeFile } from "@tauri-apps/api/fs";
 import getSVGColors from "./utils";
 import { save } from "@tauri-apps/api/dialog";
-import useSidebarStore from "../../store/useSidebarStore";
+
 import { copyToClipboard, optmiseSvg } from "../../utils";
 import useAppStore from "../../store";
-import {
-  Button,
-  ButtonGroup,
-  DialogContainer,
-  useDialogContainer,
-} from "@adobe/react-spectrum";
+import { Button, ButtonGroup, DialogContainer } from "@adobe/react-spectrum";
 
 function BottomBar() {
   const [data, setData] = useState<any>({
@@ -52,18 +47,18 @@ function BottomBar() {
 
     fetchColors();
   }, [iconSelected, data]);
-  const handleExportSvg = async (svgContent: string, name: string) => {
-    try {
-      await writeFile(name + ".svg", svgContent, {
-        dir: BaseDirectory.Desktop,
-      });
+  // const handleExportSvg = async (svgContent: string, name: string) => {
+  //   try {
+  //     await writeFile(name + ".svg", svgContent, {
+  //       dir: BaseDirectory.Desktop,
+  //     });
 
-      console.log(BaseDirectory);
-    } catch (error) {
-      console.error("Failed to export SVG:", error);
-      // Handle the error as needed
-    }
-  };
+  //     console.log(BaseDirectory);
+  //   } catch (error) {
+  //     console.error("Failed to export SVG:", error);
+  //     // Handle the error as needed
+  //   }
+  // };
 
   return (
     <DialogContainer

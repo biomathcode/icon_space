@@ -1,8 +1,8 @@
 import useSidebarStore from "../../store/useSidebarStore";
-import Search from "./Search";
+
 import SubMenu from "./SubMenu";
 
-function HeaderArea({ data }: { data: any }) {
+function HeaderArea() {
   const { isOpen, toggleSidebar } = useSidebarStore();
   return (
     <section

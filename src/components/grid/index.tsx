@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 import {
   DndContext,
   closestCenter,
@@ -18,8 +18,6 @@ import {
 import Grid from "./Grid";
 import SortableItem from "./SortableItem";
 import Item from "./item";
-import toast from "react-hot-toast";
-import { writeText } from "@tauri-apps/api/clipboard";
 import useAppStore, { Icon } from "../../store/useAppStore";
 import { updateIconById } from "../../db";
 
@@ -62,8 +60,7 @@ function Tags({ tags }: { tags: any }) {
 }
 
 const GridContainer = () => {
-  const { icons, setIcons, swapIcons, iconSelected, setIconSelected } =
-    useAppStore();
+  const { icons, setIcons, setIconSelected } = useAppStore();
 
   const [activeId, setActiveId] = useState<string | null>(null);
   const sensors = useSensors(
@@ -84,14 +81,6 @@ const GridContainer = () => {
       const { active, over } = event;
 
       if (over && active?.id !== over?.id) {
-        console.log("icons", icons);
-        const oldIndex = icons.find(
-          (item: any) => item.id === Number(active?.id)
-        );
-        const newIndex = icons.find(
-          (item: any) => item.id === Number(over?.id)
-        );
-
         const activeIndex = icons.findIndex(({ id }) => id === active.id);
         const overIndex = icons.findIndex(({ id }) => id === over?.id);
 
@@ -118,6 +107,7 @@ const GridContainer = () => {
 
   return (
     <>
+      <Tags tags={[]} />
       <DndContext
         sensors={sensors}
         collisionDetection={closestCenter}

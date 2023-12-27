@@ -1,6 +1,5 @@
 import * as Ariakit from "@ariakit/react";
 import { useState } from "react";
-import { insertFolder } from "../../db";
 import useAppStore from "../../store";
 
 export default function Dialog() {

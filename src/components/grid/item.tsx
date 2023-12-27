@@ -1,5 +1,5 @@
 import { forwardRef, HTMLAttributes, CSSProperties } from "react";
-import { deleteIconById } from "../../db";
+
 import { Text } from "@adobe/react-spectrum";
 import { truncateText } from "../../utils";
 
