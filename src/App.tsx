@@ -48,7 +48,7 @@ function App() {
     });
     return () => {
       listern.then((e) => {
-        console.log("closed");
+        console.log("closed", e);
       });
     };
   }, []);

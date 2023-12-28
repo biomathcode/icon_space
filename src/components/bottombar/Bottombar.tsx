@@ -3,9 +3,9 @@
 import { useEffect, useState } from "react";
 import CodeEditor from "../editor/index";
 import { getIconById, updateIconSvgById } from "../../db";
-import { BaseDirectory, writeFile, writeTextFile } from "@tauri-apps/api/fs";
+import { writeFile } from "@tauri-apps/api/fs";
 import getSVGColors from "./utils";
-import { open, save } from "@tauri-apps/api/dialog";
+import { save } from "@tauri-apps/api/dialog";
 
 import { copyToClipboard, optmiseSvg } from "../../utils";
 import useAppStore from "../../store";
@@ -105,25 +105,6 @@ function BottomBar() {
                 }}
               >
                 Copy to clipboard
-              </Button>
-              <Button
-                variant="accent"
-                onPress={async () => {
-                  const directory = await open({
-                    title: "Select Folder to export to",
-                    directory: true,
-                    multiple: false,
-                  });
-
-                  const data = [
-                    { name: "svg", content: "content" },
-                    { name: "svg", content: "content" },
-                  ];
-
-                  console.log(directory);
-                }}
-              >
-                Open Directory
               </Button>
 
               <Button

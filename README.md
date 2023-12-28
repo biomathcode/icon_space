@@ -11,6 +11,9 @@ Space For your Icons
 
 Icon Space is a simple application that allows users to store and manage SVG icons in their personal space. This application is built using Tauri, a framework for creating lightweight, flexible desktop apps with web technologies.
 
+![IconSpace app shown with macos background](asserts/cover.webp)
+
+
 
 ### Features
 - Drag and Drop
