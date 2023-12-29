@@ -82,62 +82,6 @@ export const handleInitializeDatabase = async () => {
   }
 };
 
-export const addDummyData = async () => {
-  try {
-    const db = await getDatabase();
-
-    // Dummy data to be inserted
-    const dummyData = [
-      {
-        name: "Icon 1",
-        indx: 1,
-        svg: '<svg xmlns="http://www.w3.org/2000/svg" version="1.2" baseProfile="tiny" width="47.4" height="40.65" viewBox="21 18.5 158 135.5"><path d="M25,50 l150,0 0,100 -150,0 z" stroke-width="4" stroke="black" fill="rgb(128,224,255)" fill-opacity="1" ></path><path d="M25,50 L175,150 M25,150 L175,50" stroke-width="4" stroke="black" fill="black" ></path><g transform="translate(0,0)" stroke-width="4" stroke="black" fill="none" ><circle cx="100" cy="30" r="7.5" fill="black" ></circle><circle cx="70" cy="30" r="7.5" fill="black" ></circle><circle cx="130" cy="30" r="7.5" fill="black" ></circle></g></svg>',
-      },
-      {
-        name: "Icon 2",
-        indx: 2,
-        svg: '<svg xmlns="http://www.w3.org/2000/svg" version="1.2" baseProfile="tiny" width="47.4" height="40.65" viewBox="21 18.5 158 135.5"><path d="M25,50 l150,0 0,100 -150,0 z" stroke-width="4" stroke="black" fill="rgb(128,224,255)" fill-opacity="1" ></path><path d="M25,50 L175,150 M25,150 L175,50" stroke-width="4" stroke="black" fill="black" ></path><g transform="translate(0,0)" stroke-width="4" stroke="black" fill="none" ><circle cx="100" cy="30" r="7.5" fill="black" ></circle><circle cx="70" cy="30" r="7.5" fill="black" ></circle><circle cx="130" cy="30" r="7.5" fill="black" ></circle></g></svg>',
-      },
-      // Add more dummy data as needed
-    ];
-
-    const folders = [
-      {
-        name: "home",
-      },
-      {
-        name: "illustrations",
-      },
-    ];
-
-    // Insert dummy data into the Icons table
-    for (const item of dummyData) {
-      const o = await db.execute(
-        `
-          INSERT INTO icons (name, svg, indx) VALUES ($1, $2, $3)
-        `,
-        [item.name, item.svg, item.indx]
-      );
-      console.log(o.lastInsertId);
-    }
-
-    for (const item of folders) {
-      const o = await db.execute(
-        `
-          INSERT INTO folders (name) VALUES ($1)
-        `,
-        [item.name]
-      );
-      console.log(o.lastInsertId);
-    }
-
-    console.log("Dummy data added successfully!");
-  } catch (error) {
-    console.error("Error adding dummy data:", error);
-    throw error; // Re-throw the error to be handled elsewhere if necessary
-  }
-};
-
 export const getAllIcons = async (folder_id: number) => {
   try {
     const db = await getDatabase();
