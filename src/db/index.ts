@@ -1,5 +1,5 @@
 import toast from "react-hot-toast";
-import Database from "tauri-plugin-sql-api";
+import Database, { QueryResult } from "tauri-plugin-sql-api";
 
 export const databaseName = "track3.db";
 
@@ -350,6 +350,23 @@ export const updateIconSvgById = async (
   } catch (error) {
     console.error(`Error renaming icon with id ${id}:`, error);
     throw error;
+  }
+};
+
+export const createTag = async (name: string, color: string) => {
+  const db = await getDatabase();
+
+  try {
+    return await db.execute(
+      `
+    INSERT INTO tags (name, color) VALUES ($1, $2)
+  
+    `,
+      [name, color]
+    );
+  } catch (e) {
+    console.error(`Error updating icon with id`, e);
+    throw e;
   }
 };
 
