@@ -69,7 +69,6 @@ jobs:
 
       - name: Install Deps
         run: pnpm install
-        working-directory: tauri
 
       - name: install dependencies (ubuntu only)
         if: matrix.os == 'Ubuntu-Latest'
