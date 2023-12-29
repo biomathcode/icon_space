@@ -77,7 +77,10 @@ const GridContainer = () => {
         onDragCancel={handleDragCancel}
         autoScroll={{ threshold: { x: 0, y: 0.2 } }}
       >
-        <SortableContext items={icons} strategy={rectSortingStrategy}>
+        <SortableContext
+          items={icons.map((e) => e.id!)}
+          strategy={rectSortingStrategy}
+        >
           <Grid columns={10}>
             {icons.map((item: any) => (
               <SortableItem
