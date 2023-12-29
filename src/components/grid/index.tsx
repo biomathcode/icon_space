@@ -18,7 +18,7 @@ import {
 import Grid from "./Grid";
 import SortableItem from "./SortableItem";
 import Item from "./item";
-import useAppStore, { Icon } from "../../store/useAppStore";
+import useAppStore from "../../store/useAppStore";
 import { updateIconById } from "../../db";
 
 // we have support for input
