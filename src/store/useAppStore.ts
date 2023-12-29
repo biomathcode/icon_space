@@ -130,7 +130,7 @@ const useAppStore = create<State & FeatureFlags>((set, get) => ({
         icons: icons,
       });
     } else {
-      const getData = (await getAllIcons(get().folderSelected)) as Icon[];
+      const getData = (await getAllIcons(get().folderSelected)) as any;
 
       set({
         icons: getData,

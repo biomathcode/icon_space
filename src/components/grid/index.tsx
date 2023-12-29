@@ -21,44 +21,6 @@ import Item from "./item";
 import useAppStore from "../../store/useAppStore";
 import { updateIconById } from "../../db";
 
-// we have support for input
-// number
-// Deg
-// checkbox
-// date
-// file
-// time
-// url
-//
-
-function Tags({ tags }: { tags: any }) {
-  return (
-    <div
-      className="row gap-2"
-      style={{
-        maxWidth: "100px",
-        overflow: "auto",
-        gap: "10px",
-
-        justifyContent: "flex-start",
-      }}
-    >
-      {tags.map((tag: any) => (
-        <div
-          style={{
-            fontSize: "10px",
-            fontWeight: "bold",
-
-            borderRadius: "4px",
-          }}
-        >
-          {tag + "  "}
-        </div>
-      ))}
-    </div>
-  );
-}
-
 const GridContainer = () => {
   const { icons, setIcons, setIconSelected } = useAppStore();
 
@@ -86,7 +48,7 @@ const GridContainer = () => {
 
         const newItems = arrayMove(icons, activeIndex, overIndex).map(
           (e, i) => ({ ...e, indx: i + 1 })
-        ) as any;
+        );
 
         for (let icn of newItems) {
           updateIconById(Number(icn.id), {
@@ -107,7 +69,6 @@ const GridContainer = () => {
 
   return (
     <>
-      <Tags tags={["Action", "Outlined", ""]} />
       <DndContext
         sensors={sensors}
         collisionDetection={closestCenter}
