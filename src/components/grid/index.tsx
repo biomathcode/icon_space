@@ -86,7 +86,7 @@ const GridContainer = () => {
 
         const newItems = arrayMove(icons, activeIndex, overIndex).map(
           (e, i) => ({ ...e, indx: i + 1 })
-        ) as Icon[];
+        ) as any;
 
         for (let icn of newItems) {
           updateIconById(Number(icn.id), {
