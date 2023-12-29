@@ -28,6 +28,8 @@ function TableContainer() {
     <View
       UNSAFE_style={{
         marginTop: "100px",
+        minHeight: "600px",
+        height: "calc(100vh - 100px)",
       }}
     >
       <Flex height="size-5000" width="100%" direction="column" gap="size-150">

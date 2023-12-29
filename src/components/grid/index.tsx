@@ -107,7 +107,7 @@ const GridContainer = () => {
 
   return (
     <>
-      <Tags tags={[]} />
+      <Tags tags={["Action", "Outlined", ""]} />
       <DndContext
         sensors={sensors}
         collisionDetection={closestCenter}
